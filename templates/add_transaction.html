@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendWise</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    <div class="screen" id="add-transaction-screen">
+      <div class="txnContainer">
+        <div class="heading1">Add Transaction</div>
+        <!-- Transaction Type Dropdown -->
+        <label for="transaction-type">Transaction Type:</label>
+        <select id="transaction-type-sc01" name="transaction-type">
+          <option value="income">Income</option>
+          <option value="expenditure" selected>Expenditure</option>
+          <option value="transfer">Transfer</option>
+        </select>
+
+        <!-- Amount Text Field -->
+        <label for="amount">Amount:</label>
+        <input type="text" id="amount-sc01" name="amount">
+        <br>
+
+        <!-- Description Text Field -->
+        <label for="description">Description:</label>
+        <input type="text" id="description-sc01" name="description">
+        <br>
+        
+        <!-- Category Dropdown -->
+        <label for="category">Category:</label>
+        <div class="categoryContainer">
+          <select id="category-drop-sc01" name="category">
+            <option value="">Please Select</option>
+          </select>
+          <input type="text" id="custom-category-input" name="custom-category" placeholder="Enter Category" style="display: none;">
+          <button type="button" id="add-category-btn" onclick="toggleCategoryInput()">Add</button>
+        </div>
+
+        <!-- Source Dropdown -->
+        <label for="source">Source:</label>
+        <select id="source-drop-sc01" name="source">
+          <option value="">Please Select</option>
+        </select>
+        <br>
+
+        <!-- DateTime Picker -->
+        <label for="transaction-datetime">Date and Time:</label>
+        <input type="datetime-local" id="transaction-datetime-sc01" name="transaction-datetime">
+        <button class="submitTxn" onclick="addTxn()">Add Transaction</button>
+      </div>
+    </div>
+
+    <!-- Placeholder screens for other sections -->
+    <div class="screen" id="view-transactions-screen" style="display: none;">
+      <div class="heading1">View Transactions (Placeholder)</div>
+
+      <div class="viewTxnContainer" id="view-Txn-Container">
+        <div class="viewTxnCard" id="">
+            <div class="content">
+                <div class="source">
+                    <span>HDFC Bank</span>
+                </div>
+                <div class="category">
+                    <span>BlinkIt</span>
+                </div>
+                <div class="amount">
+                    <span>&#8377 54000</span>
+                </div>
+                <div class="type">
+                    <i class="material-icons">arrow_outward</i>
+                </div>
+            </div>
+            <div class="descriptionFooter">
+                <span class="desc">Groceries</span>
+                <span class="datetime">26-03-2024 . 03:10 PM</span>
+            </div>
+        </div>
+        <div class="viewTxnCard">
+            <div class="content">
+                <div class="source">
+                    <span>HDFC Bank</span>
+                </div>
+                <div class="category">
+                    <span>BlinkIt</span>
+                </div>
+                <div class="amount">
+                    <span>&#8377 54000</span>
+                </div>
+                <div class="type">
+                    <i class="material-icons">arrow_outward</i>
+                </div>
+            </div>
+            <div class="descriptionFooter">
+                <span class="desc">Groceries</span>
+                <span class="datetime">26-03-2024 . 03:10 PM</span>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="overview-screen" style="display: none;">
+      <div class="heading1">Overview (Placeholder)</div>
+    </div>
+
+    <div class="screen" id="recurring-screen" style="display: none;">
+      <div class="heading1">Recurring (Placeholder)</div>
+    </div>
+
+    <div class="screen" id="reports-screen" style="display: none;">
+      <div class="heading1">Reports (Placeholder)</div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+      <div class="nav-item" id="nav-add-transaction"><i class="material-icons">library_add</i><span>Add Txn</span></div>
+      <div class="nav-item" id="nav-view-transactions"><i class="material-icons">view_list</i><span>View Txn</span></div>
+      <div class="nav-item" id="nav-overview"><i class="material-icons">account_balance</i><span>Accounts</span></div>
+      <div class="nav-item" id="nav-recurring"><i class="material-icons">event_repeat</i><span>Recurring</span></div>
+      <div class="nav-item" id="nav-reports"><i class="material-icons">equalizer</i><span>Reports</span></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

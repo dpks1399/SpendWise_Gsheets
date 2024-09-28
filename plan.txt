@@ -1,0 +1,26 @@
+----------------------TODO--------------------------------------------------------
+28-09-2024
+1.  Adjust CSS alignments in view transactions record
+2.  Add color notations to records as per transaction type in view transactions records
+3.  Give id to each record: change storage layer and verify add transaction feature
+4.  Add Delete feature (after TODO #3)
+5.  Fix record overlapping with nav bar in view transaction screen
+
+
+----------------------CHECKLIST----------------------------------------------------
+
+1.  Create rough screen structure ✅
+    a.  bottom nav ✅
+    b.  placeholder screens ✅
+
+2.  Create Add Transaction screen ✅
+    a.  create frontend ✅
+    b.  add checks and validations ✅
+    c.  add save functionality ✅
+
+3.  Create View Transaction screen
+    a.  create single record structure ❗️(TODO #1 #2)
+    b.  add fetch records and populate feature ✅
+    c.  add delete records feature ❗️ (TODO #3 #4)
+    d.  add edit records feature
+
