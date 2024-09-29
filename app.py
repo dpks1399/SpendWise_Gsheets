@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 import configparser
-from worker import getSources, getCategories, insertTxn, getTransactions
+from worker_supabase import getSources, getCategories, insertTxn, getTransactions
     
 app = Flask(__name__)
 

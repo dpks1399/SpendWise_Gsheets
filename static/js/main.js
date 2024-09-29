@@ -90,12 +90,12 @@ function populateTransactions(txns){
 
     let records = ''
     for(let i=0; i<txns.length; i+=1){
-        let id = txns[i].id
+        let id = txns[i].ID
         let source = txns[i].SOURCE
         let category = txns[i].CATEGORY
         let amount = txns[i].AMOUNT
         let description = txns[i].DESCRIPTION
-        let datetime = txns[i].DATE
+        let datetime = txns[i].DATETIME
 
         let txn_block = `<div class="viewTxnCard" id="${id}">\
                             <div class="content">\

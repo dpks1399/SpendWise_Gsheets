@@ -1,0 +1,7 @@
+{
+    "DB_HOST": "aws-0-us-west-1.pooler.supabase.com",
+    "DB_NAME": "postgres",
+    "DB_USER": "postgres.nbomrfmdgdllgytpcxqw",
+    "DB_PASSWORD": "#Deepak23091996",
+    "DB_PORT": "6543"
+}
