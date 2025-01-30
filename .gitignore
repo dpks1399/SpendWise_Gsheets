@@ -1,5 +1,7 @@
+.*
 venv
 creds_gsheets.json
 creds_supabase.json
-plan.txt
+app.yaml
+requirements.txt
 __pycache__
