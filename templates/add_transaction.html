@@ -6,120 +6,160 @@
     <title>SpendWise</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="screen" id="add-transaction-screen">
-      <div class="txnContainer">
-        <div class="heading1">Add Transaction</div>
-        <!-- Transaction Type Dropdown -->
-        <label for="transaction-type">Transaction Type:</label>
-        <select id="transaction-type-sc01" name="transaction-type">
-          <option value="income">Income</option>
-          <option value="expenditure" selected>Expenditure</option>
-          <option value="transfer">Transfer</option>
-        </select>
+    <div class="app-bar">
+      <!-- <div class="menu-icon"><i class="fas fa-bars"></i></div> -->
+      <div class="menu-icon" id=""><i class="material-icons" id="menuOpen">menu</i></div>
+      <div class="screen-title" id="screenTitle">Screen Name</div>
+      <div class="profile-icon" id=""><i class="material-icons">account_circle</i></div>
+    </div>
+    <div class="menu-container" id="menuContainer">
+      <div class="menu-header bb">
+        <div class="menu-logo">SPENDWISE</div>
+        <div class="menu-close"><i class="material-icons" id="menuClose">close</i></div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="screen" id="home-screen" name="Home">
+        <div class="homeScreenContent" id="home-screen-content">
+         <!--  <div class="card">
+            <div class="logo">Account Info</div>
+            <div class="account-name">Savings Account</div>
+            <div class="total-balance">Total Balance: $12,345</div>
+            <div class="balance-info">
+                <div>
+                    <span>Fixed Expenses</span><br>
+                    <span class="amount">$2,500</span>
+                </div>
+                <div>
+                    <span>Available to Spend</span><br>
+                    <span class="amount">$9,845</span>
+                </div>
+            </div>
+          </div>--> 
+        </div>
+        <div class="txnContainer" id="addTxnPopup">
+          <div class="closePopup">
+            <button class="" id="closeTxnPopupBtn" onclick="addTxnPopup(0)"><i class="material-icons">close</i></button>
+          </div>       
+          <div class="heading1">Add Transaction</div>
+          <!-- Transaction Type Dropdown -->
+          <label for="transaction-type">Transaction Type:</label>
+          <select id="transaction-type-sc01" name="transaction-type">
+            <option value="income">Income</option>
+            <option value="expenditure" selected>Expenditure</option>
+            <option value="transfer">Transfer</option>
+          </select>
 
-        <!-- Amount Text Field -->
-        <label for="amount">Amount:</label>
-        <input type="text" id="amount-sc01" name="amount">
-        <br>
+          <!-- Amount Text Field -->
+          <label for="amount">Amount:</label>
+          <input type="text" id="amount-sc01" name="amount">
+          <br>
 
-        <!-- Description Text Field -->
-        <label for="description">Description:</label>
-        <input type="text" id="description-sc01" name="description">
-        <br>
-        
-        <!-- Category Dropdown -->
-        <label for="category">Category:</label>
-        <div class="categoryContainer">
-          <select id="category-drop-sc01" name="category">
+          <!-- Description Text Field -->
+          <label for="description">Description:</label>
+          <input type="text" id="description-sc01" name="description">
+          <br>
+          
+          <!-- Category Dropdown -->
+          <label for="category">Category:</label>
+          <div class="categoryContainer">
+            <select id="category-drop-sc01" name="category">
+              <option value="">Please Select</option>
+            </select>
+            <input type="text" id="custom-category-input" name="custom-category" placeholder="Enter Category" style="display: none;">
+            <button type="button" id="add-category-btn" onclick="toggleCategoryInput()">Add</button>
+          </div>
+
+          <!-- Source Dropdown -->
+          <label for="source">Source:</label>
+          <select id="source-drop-sc01" name="source">
             <option value="">Please Select</option>
           </select>
-          <input type="text" id="custom-category-input" name="custom-category" placeholder="Enter Category" style="display: none;">
-          <button type="button" id="add-category-btn" onclick="toggleCategoryInput()">Add</button>
+          <br>
+
+          <!-- DateTime Picker -->
+          <label for="transaction-datetime">Date and Time:</label>
+          <input type="datetime-local" id="transaction-datetime-sc01" name="transaction-datetime">
+          <button class="submitTxn" onclick="addTxn()">Add Transaction</button>
         </div>
+        <div class="addTxnBtnDiv" id="">
+          <button id="addTnxPopBtn" onclick="addTxnPopup(1)">+</button>
+        </div>
+      </div>
+      <div class="screen" id="view-transactions-screen" name="Transactions" style="display: none;">
+        <!-- <div class="heading1">View Transactions (Placeholder)</div> -->
 
-        <!-- Source Dropdown -->
-        <label for="source">Source:</label>
-        <select id="source-drop-sc01" name="source">
-          <option value="">Please Select</option>
-        </select>
-        <br>
-
-        <!-- DateTime Picker -->
-        <label for="transaction-datetime">Date and Time:</label>
-        <input type="datetime-local" id="transaction-datetime-sc01" name="transaction-datetime">
-        <button class="submitTxn" onclick="addTxn()">Add Transaction</button>
+        <div class="viewTxnContainer" id="view-Txn-Container">
+          <div class="viewTxnCard" id="">
+              <div class="content">
+                  <div class="source">
+                      <span>HDFC Bank</span>
+                  </div>
+                  <div class="category">
+                      <span>BlinkIt</span>
+                  </div>
+                  <div class="amount">
+                      <span>&#8377 54000</span>
+                  </div>
+                  <div class="type">
+                      <i class="material-icons">delete</i>
+                  </div>
+                  <div class="type">
+                    <i class="material-icons">edit_square</i>
+                </div>
+              </div>
+              <div class="descriptionFooter">
+                  <span class="desc">Groceries</span>
+                  <span class="datetime">26-03-2024 . 03:10 PM</span>
+              </div>
+          </div>
+          <div class="viewTxnCard">
+              <div class="content">
+                  <div class="source">
+                      <span>HDFC Bank</span>
+                  </div>
+                  <div class="category">
+                      <span>BlinkIt</span>
+                  </div>
+                  <div class="amount">
+                      <span>&#8377 54000</span>
+                  </div>
+                  <div class="type">
+                      <i class="material-icons">arrow_outward</i>
+                  </div>
+              </div>
+              <div class="descriptionFooter">
+                  <span class="desc">Groceries</span>
+                  <span class="datetime">26-03-2024 . 03:10 PM</span>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen" id="overview-screen" name="Accounts" style="display: none;">
+        <!-- <div class="heading1">Overview (Placeholder)</div> -->
+      </div>
+      <div class="screen" id="recurring-screen" name="Recurring" style="display: none;">
+        <!-- <div class="heading1">Recurring (Placeholder)</div> -->
+      </div>
+      <div class="screen" id="reports-screen" name="Reports" style="display: none;">
+        <!-- <div class="heading1">Reports (Placeholder)</div> -->
+      </div>
+      <div class="screen" id="reports-screen" name="Reports" style="display: none;">
+        <!-- <div class="heading1">Reports (Placeholder)</div> -->
       </div>
     </div>
 
-    <!-- Placeholder screens for other sections -->
-    <div class="screen" id="view-transactions-screen" style="display: none;">
-      <div class="heading1">View Transactions (Placeholder)</div>
-
-      <div class="viewTxnContainer" id="view-Txn-Container">
-        <div class="viewTxnCard" id="">
-            <div class="content">
-                <div class="source">
-                    <span>HDFC Bank</span>
-                </div>
-                <div class="category">
-                    <span>BlinkIt</span>
-                </div>
-                <div class="amount">
-                    <span>&#8377 54000</span>
-                </div>
-                <div class="type">
-                    <i class="material-icons">arrow_outward</i>
-                </div>
-            </div>
-            <div class="descriptionFooter">
-                <span class="desc">Groceries</span>
-                <span class="datetime">26-03-2024 . 03:10 PM</span>
-            </div>
-        </div>
-        <div class="viewTxnCard">
-            <div class="content">
-                <div class="source">
-                    <span>HDFC Bank</span>
-                </div>
-                <div class="category">
-                    <span>BlinkIt</span>
-                </div>
-                <div class="amount">
-                    <span>&#8377 54000</span>
-                </div>
-                <div class="type">
-                    <i class="material-icons">arrow_outward</i>
-                </div>
-            </div>
-            <div class="descriptionFooter">
-                <span class="desc">Groceries</span>
-                <span class="datetime">26-03-2024 . 03:10 PM</span>
-            </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="screen" id="overview-screen" style="display: none;">
-      <div class="heading1">Overview (Placeholder)</div>
-    </div>
-
-    <div class="screen" id="recurring-screen" style="display: none;">
-      <div class="heading1">Recurring (Placeholder)</div>
-    </div>
-
-    <div class="screen" id="reports-screen" style="display: none;">
-      <div class="heading1">Reports (Placeholder)</div>
-    </div>
-
-    <!-- Bottom Navigation Bar -->
     <div class="bottom-nav">
-      <div class="nav-item" id="nav-add-transaction"><i class="material-icons">library_add</i><span>Add Txn</span></div>
+      <div class="nav-item" id="nav-home"><i class="material-icons">home</i><span>Home</span></div>
       <div class="nav-item" id="nav-view-transactions"><i class="material-icons">view_list</i><span>View Txn</span></div>
       <div class="nav-item" id="nav-overview"><i class="material-icons">account_balance</i><span>Accounts</span></div>
       <div class="nav-item" id="nav-recurring"><i class="material-icons">event_repeat</i><span>Recurring</span></div>
-      <div class="nav-item" id="nav-reports"><i class="material-icons">equalizer</i><span>Reports</span></div>
+      <!-- <div class="nav-item" id="nav-reports"><i class="material-icons">equalizer</i><span>Reports</span></div> -->
     </div>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

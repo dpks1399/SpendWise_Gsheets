@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", function() {
     fetchCategories();
     fetchSources();
     fetchTransactions();
-    showScreen('add-transaction-screen');  // Show the Add Transaction screen by default
+    showScreen('home-screen');  // Show the Add Transaction screen by default
+    addTxnPopup(1);
 });
 
 // Your original function to send transaction data
@@ -22,6 +23,7 @@ function sendInsertTxnData(data) {
             fetchCategories();
             resetTxn();
             alert("Transaction Saved");
+            addTxnPopup(0);
             fetchTransactions();
         } else {
             console.log('Could not save transaction.');
@@ -86,6 +88,10 @@ function fetchTransactions(){
     });
 }
 
+function editDeleteTransaction(id){
+    alert("edit or delete"+id);
+}
+
 function populateTransactions(txns){
 
     let records = ''
@@ -97,7 +103,7 @@ function populateTransactions(txns){
         let description = txns[i].DESCRIPTION
         let datetime = txns[i].DATETIME
 
-        let txn_block = `<div class="viewTxnCard" id="${id}">\
+        let txn_block = `<div class="viewTxnCard" id="txn-record-${id}" onclick=editDeleteTransaction("txn-record-${id}")>\
                             <div class="content">\
                                 <div class="source">\
                                     <span>${source}</span>\
@@ -236,14 +242,35 @@ function showScreen(screenId) {
     });
 
     const activeScreen = document.getElementById(screenId);
+    const title = document.getElementById("screenTitle");
     if (activeScreen) {
         activeScreen.style.display = 'block';
+        title.textContent = activeScreen.getAttribute("name")
+        // console.log(activeScreen.getAttribute("name"))
     }
 }
 
+function addTxnPopup(val){
+    if(val == 0){
+        document.getElementById("addTxnPopup").style.display = "none";
+        document.getElementById("addTnxPopBtn").style.display = "block";
+        document.getElementById("home-screen-content").style.display = "block";
+    }
+    else if(val == 1){
+        document.getElementById("home-screen-content").style.display = "none";
+        document.getElementById("addTxnPopup").style.display = "block";
+        document.getElementById("addTnxPopBtn").style.display = "none";
+    }
+}
+
+function toggleMenu(){
+    document.getElementById("menuContainer").classList.toggle("active");
+}
+
+
 // Event listeners for bottom navigation
-document.getElementById('nav-add-transaction').addEventListener('click', () => {
-    showScreen('add-transaction-screen');
+document.getElementById('nav-home').addEventListener('click', () => {
+    showScreen('home-screen');
 });
 
 document.getElementById('nav-view-transactions').addEventListener('click', () => {
@@ -258,6 +285,14 @@ document.getElementById('nav-recurring').addEventListener('click', () => {
     showScreen('recurring-screen');
 });
 
-document.getElementById('nav-reports').addEventListener('click', () => {
-    showScreen('reports-screen');
+document.getElementById('menuOpen').addEventListener('click', () => {
+    toggleMenu();
 });
+
+document.getElementById('menuClose').addEventListener('click', () => {
+    toggleMenu();
+});
+
+// document.getElementById('nav-reports').addEventListener('click', () => {
+//     showScreen('reports-screen');
+// });
