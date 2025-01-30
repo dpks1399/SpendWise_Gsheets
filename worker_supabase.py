@@ -1,7 +1,7 @@
 import psycopg2
 import json
 
-SCHEMA = 'sw_v2'
+SCHEMA = 'sw_usr_001'
 
 def load_db_creds():
     try:
