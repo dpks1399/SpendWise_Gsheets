@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
@@ -97,23 +99,45 @@
         <!-- <div class="heading1">View Transactions (Placeholder)</div> -->
 
         <div class="viewTxnContainer" id="view-Txn-Container">
-          <div class="expense-card expense">
-            <div class="icon">💰</div>
-            <div class="details">
-                <h3>Food & Dining</h3>
-                <p>McDonald's Lunch - Visa Card</p>
-                <p>2025-02-01 | 12:30 PM</p>
-            </div>
-            <div class="amount negative">- ₹350</div>
+          <div class="viewTxnCard" style="border-left:solid 4px #4CAF50">
+              <div class="date">
+                <div class="txn_date">27</div>
+                <div class="txn_month">May</div>
+              </div>
+              <div class="content">
+                  <div class="txn_details">
+                    <div class="txn_desc">
+                      <span>Jedhe Amrittulley ka spna h ki wo sabse bada tea stall chalaye</span>
+                    </div>
+                    <div class="txn_additionalDetails">
+                      <div class="txn_category">Tea & Snacks - SBI Saving</div>
+                      <div class="txn_time">10:10 PM</div>
+                    </div>
+                  </div>
+                  <div class="txn_amount" style="color: #4CAF50;">
+                    <span>&#8377 400000</span>
+                  </div>
+              </div>
           </div>
-          <div class="expense-card income">
-            <div class="icon">💼</div>
-            <div class="details">
-                <h3>Salary</h3>
-                <p>Credited to Savings Account</p>
-                <p>2025-02-01 | 09:00 AM</p>
-            </div>
-            <div class="amount positive">+ ₹50,000</div>
+          <div class="viewTxnCard" style="border-left:solid 4px #FF4D4D">
+              <div class="date">
+                <div class="txn_date">27</div>
+                <div class="txn_month">May</div>
+              </div>
+              <div class="content">
+                  <div class="txn_details">
+                    <div class="txn_desc">
+                      <span>Jedhe Amrittulley</span>
+                    </div>
+                    <div class="txn_additionalDetails">
+                      <div class="txn_category">Tea & Snacks - SBI Saving</div>
+                      <div class="txn_time">10:10 PM</div>
+                    </div>
+                  </div>
+                  <div class="txn_amount" style="color: #4CAF50;">
+                    <span>&#8377 40</span>
+                  </div>
+              </div>
           </div>
         </div>
       </div>
