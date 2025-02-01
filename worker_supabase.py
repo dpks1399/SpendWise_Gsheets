@@ -4,6 +4,26 @@ import json
 # SCHEMA = 'sw_v2'
 SCHEMA = 'sw_usr_001'
 
+def inr_format(amount):
+    amount = str(amount)
+    
+    if "." in amount:
+        whole, decimal = amount.split(".")  # Split whole and decimal parts
+    else:
+        whole, decimal = amount, None
+
+    if len(whole) <= 3:
+        formatted_whole = whole  # No formatting needed for numbers <= 999
+    else:
+        last_three = whole[-3:]  # Get last 3 digits
+        rest = whole[:-3]  # Get remaining digits
+        
+        # Group in 2s from the end
+        formatted_whole = ",".join([rest[i:i+2] for i in range(0, len(rest), 2)])  
+        formatted_whole = f"{formatted_whole},{last_three}" if formatted_whole else last_three
+    
+    return f"{formatted_whole}.{decimal}" if decimal else formatted_whole
+
 def load_db_creds():
     try:
         with open('creds_supabase.json', 'r') as f:
@@ -77,6 +97,7 @@ def fetch_transactions_as_dict(query):
                     record = dict(zip(columns, row))
                     # Convert DATETIME from datetime object to string
                     record['DATETIME'] = record['DATETIME'].strftime('%d %b %Y | %H:%M')
+                    record['AMOUNT'] = inr_format(record['AMOUNT'])
                     result.append(record)
                 
                 return result
