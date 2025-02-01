@@ -96,33 +96,58 @@ function populateTransactions(txns){
 
     let records = ''
     for(let i=0; i<txns.length; i+=1){
-        let id = txns[i].ID
-        let source = txns[i].SOURCE
-        let category = txns[i].CATEGORY
-        let amount = txns[i].AMOUNT
-        let description = txns[i].DESCRIPTION
-        let datetime = txns[i].DATETIME
+        let id = txns[i].ID;
+        let source = txns[i].SOURCE;
+        let category = txns[i].CATEGORY;
+        let amount = txns[i].AMOUNT;
+        let description = txns[i].DESCRIPTION;
+        let datetime = txns[i].DATETIME;
+        let type = txns[i].TYPE;
+        let sign = ''
+        let am_val = ''
+        let t_val = ''
+        if(type == 'expenditure'){
+            sign = '-'
+            am_val = 'negative'
+            t_val = 'expense'
+        }
+        else if(type == "income"){
+            sign = '+'
+            am_val = 'positive'
+            t_val = 'income'
+        }
+        
+        // let txn_block = `<div class="viewTxnCard" id="txn-record-${id}" onclick=editDeleteTransaction("txn-record-${id}")>\
+        //                     <div class="content">\
+        //                         <div class="source">\
+        //                             <span>${source}</span>\
+        //                         </div>\
+        //                         <div class="category">\
+        //                             <span>${category}</span>\
+        //                         </div>\
+        //                         <div class="amount">\
+        //                             <span>&#8377 ${amount}</span>\
+        //                         </div>\
+        //                         <div class="type">\
+        //                             <i class="material-icons">arrow_outward</i>\
+        //                         </div>\
+        //                     </div>\
+        //                     <div class="descriptionFooter ${col}">\
+        //                         <span class="desc">${description}</span>\
+        //                         <span class="datetime">${datetime}</span>\
+        //                     </div>\
+        //                     </div>`
 
-        let txn_block = `<div class="viewTxnCard" id="txn-record-${id}" onclick=editDeleteTransaction("txn-record-${id}")>\
-                            <div class="content">\
-                                <div class="source">\
-                                    <span>${source}</span>\
-                                </div>\
-                                <div class="category">\
-                                    <span>${category}</span>\
-                                </div>\
-                                <div class="amount">\
-                                    <span>&#8377 ${amount}</span>\
-                                </div>\
-                                <div class="type">\
-                                    <i class="material-icons">arrow_outward</i>\
-                                </div>\
-                            </div>\
-                            <div class="descriptionFooter">\
-                                <span class="desc">${description}</span>\
-                                <span class="datetime">${datetime}</span>\
-                            </div>\
-                            </div>`
+        let txn_block = ` <div class="expense-card ${t_val}">
+                            <div class="icon">💰</div>
+                            <div class="details">
+                                <h3>${category}</h3>
+                                <p>${description}</p>
+                                <p>${datetime}</p>
+                            </div>
+                            <div class="amount ${am_val}">${sign} &#8377 ${amount}</div>
+                        </div>
+                        `
 
         // console.log(txn_block)
         records = records + txn_block
@@ -144,8 +169,8 @@ function populateDropdown(dropdownId, items) {
 
     items.forEach(item => {
         const option = document.createElement('option');
-        option.value = item;
-        option.textContent = item;
+        option.value = item["id"];
+        option.textContent = item["value"];
         dropdown.appendChild(option);
     });
 }
@@ -169,19 +194,37 @@ function toggleCategoryInput() {
     }
 }
 
+function addNewCategory(name,type){
+    // insert category
+    if(type == "normal"){
+        val = 0;
+    }
+    else{
+        val=1;
+    }
+    data = {
+        'name':name,
+        'type':val
+    }
+    var id = sendInsertCategoryData(data)
+    //fetch category id
+    //return category id
+}
+
 // Add transaction function (untouched as per your original code)
 function addTxn() {
     var transactionType = document.getElementById("transaction-type-sc01").value;
     var amount = document.getElementById("amount-sc01").value;
     var description = document.getElementById("description-sc01").value;
-    var category = '';
+    var category = '-1';
+    var cust_category='-1';
     var source = document.getElementById("source-drop-sc01").value;
     var dateTime = getformattedDatetime(document.getElementById("transaction-datetime-sc01").value);
 
     if (!document.getElementById("custom-category-input").value) {
         category = document.getElementById("category-drop-sc01").value;
     } else {
-        category = document.getElementById("custom-category-input").value;
+        cust_category = document.getElementById("custom-category-input").value;
     }
 
     if (!amount) {
@@ -192,7 +235,7 @@ function addTxn() {
         alert("Amount should be a valid positive number.");
         return;
     }
-    if (!category) {
+    if (!category && !cust_category) {
         alert("Please select a Category.");
         return;
     }
@@ -208,18 +251,20 @@ function addTxn() {
     console.log("Amount:", amount);
     console.log("Description:", description);
     console.log("Category:", category);
+    console.log("Custom Category:", cust_category);
     console.log("Source:", source);
     console.log("Date and Time:", dateTime);
 
-    data_obj = {
-        'type': transactionType,
-        'amount': amount,
-        'description': description,
-        'category': category,
-        'source': source,
-        'datetime': dateTime
+    var data_obj = {
+            'type': transactionType,
+            'amount': amount,
+            'description': description,
+            'category': category,
+            'cust_category': cust_category,
+            'source': source,
+            'datetime': dateTime
     };
-    
+    console.log(data_obj);
     sendInsertTxnData(data_obj);
 }
 

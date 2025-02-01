@@ -1,6 +1,7 @@
 import psycopg2
 import json
 
+# SCHEMA = 'sw_v2'
 SCHEMA = 'sw_usr_001'
 
 def load_db_creds():
@@ -75,7 +76,7 @@ def fetch_transactions_as_dict(query):
                 for row in rows:
                     record = dict(zip(columns, row))
                     # Convert DATETIME from datetime object to string
-                    record['DATETIME'] = record['DATETIME'].strftime('%Y-%m-%d %H:%M:%S')
+                    record['DATETIME'] = record['DATETIME'].strftime('%d %b %Y | %H:%M')
                     result.append(record)
                 
                 return result
@@ -84,42 +85,71 @@ def fetch_transactions_as_dict(query):
     return []
 
 def getSources():
-    query = f'select distinct(name) from {SCHEMA}.accounts_master;'
+    query = f'select distinct name,id from {SCHEMA}.accounts_master order by id;'
     result = fetch_query(query)
-    sources = [source[0] for source in result]
+    sources = [{'value': name, 'id': id} for name, id in result]
     return sources
 
 def getCategories():
-    query = f'select distinct(category) from {SCHEMA}.transactions_master;'
+    query = f'select distinct category,type,id from {SCHEMA}.categories order by type,id;'
     result = fetch_query(query)
-    categories = [category[0] for category in result]
+    print(result)
+    categories =[{'value': category, 'id': id} for category, _, id in result]
     return categories
 
 def getTransactions():
-    query = f'select * from {SCHEMA}.transactions_master order by datetime desc;'
+    query = f'''
+                SELECT 
+                    t.id,
+                    t.amount,
+                    c.category AS category,
+                    a.name AS source,
+                    t.description,
+                    t.type,
+                    t.datetime
+                FROM {SCHEMA}.transactions_master t
+                JOIN {SCHEMA}.categories c ON t.category = c.id
+                JOIN {SCHEMA}.accounts_master a ON t.source = a.id
+                ORDER BY t.datetime DESC;
+    '''
     result = fetch_transactions_as_dict(query)
     return result
 
 def insertTxn(data):
-    try:
-        params = (
-            int(data['amount']),
-            data['category'],
-            data['source'],
-            data['description'],
-            data['type'],
-            data['datetime']
-        )
-        query = f'insert into {SCHEMA}.transactions_master (AMOUNT, CATEGORY, SOURCE, DESCRIPTION, TYPE, DATETIME) values(%s,%s,%s,%s,%s,%s);'
-        run_query(query,params)
-        return {'status':'success', 'result':1}
-    except Exception as e:
-        return {'status':'fail', 'result':str(e)}
+    conn = get_db_connection()
+    if conn:
+        cursor = conn.cursor()
+        try:
+            if (data['category'] =='-1' and not (data['cust_category']=='-1')):
+                name = data['cust_category']
+                params = (name,0)
+                ins_query = f'insert into {SCHEMA}.categories (category,type) values(%s,%s)'
+                cursor.execute(ins_query,params)
+                conn.commit()
+                get_query = f"select id from {SCHEMA}.categories where category = '{name}'"
+                cursor.execute(get_query)
+                res = cursor.fetchall()
+                data["category"] = res[0][0]
 
-
-
-
-
+            params = (
+                int(data['amount']),
+                int(data['category']),
+                int(data['source']),
+                data['description'],
+                data['type'],
+                data['datetime']
+            )
+            query = f'insert into {SCHEMA}.transactions_master (AMOUNT, CATEGORY, SOURCE, DESCRIPTION, TYPE, DATETIME) values(%s,%s,%s,%s,%s,%s);'
+            cursor.execute(query,params)
+            conn.commit()
+            return {'status':'success', 'result':1} 
+        except Exception as e:
+            return {'status':'fail', 'result':str(e)}
+        finally:
+            cursor.close()
+            conn.close()
+    else:
+        return {'status':'fail', 'result':'could not connect'}
 
 
 def test():
@@ -128,15 +158,16 @@ def test():
     
 
     data_obj = {
-        'type': "spend",
-        'amount': '600',
-        'description': "description",
-        'category': "category",
-        'source': "source",
+        'type': "expenditure",
+        'amount': '2',
+        'description': "tst",
+        'category': "-1",
+        'cust_category':"trying",
+        'source': "1",
         'datetime': "2024-09-25 21:33:00"
     }
     print(insertTxn(data_obj))
-    print(getTransactions())
+    # print(getTransactions())
 
 if __name__ == '__main__':
     test();   

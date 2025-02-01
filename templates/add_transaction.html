@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="app-bar">
@@ -41,6 +42,7 @@
                 </div>
             </div>
           </div>--> 
+          
         </div>
         <div class="txnContainer" id="addTxnPopup">
           <div class="closePopup">
@@ -95,48 +97,23 @@
         <!-- <div class="heading1">View Transactions (Placeholder)</div> -->
 
         <div class="viewTxnContainer" id="view-Txn-Container">
-          <div class="viewTxnCard" id="">
-              <div class="content">
-                  <div class="source">
-                      <span>HDFC Bank</span>
-                  </div>
-                  <div class="category">
-                      <span>BlinkIt</span>
-                  </div>
-                  <div class="amount">
-                      <span>&#8377 54000</span>
-                  </div>
-                  <div class="type">
-                      <i class="material-icons">delete</i>
-                  </div>
-                  <div class="type">
-                    <i class="material-icons">edit_square</i>
-                </div>
-              </div>
-              <div class="descriptionFooter">
-                  <span class="desc">Groceries</span>
-                  <span class="datetime">26-03-2024 . 03:10 PM</span>
-              </div>
+          <div class="expense-card expense">
+            <div class="icon">💰</div>
+            <div class="details">
+                <h3>Food & Dining</h3>
+                <p>McDonald's Lunch - Visa Card</p>
+                <p>2025-02-01 | 12:30 PM</p>
+            </div>
+            <div class="amount negative">- ₹350</div>
           </div>
-          <div class="viewTxnCard">
-              <div class="content">
-                  <div class="source">
-                      <span>HDFC Bank</span>
-                  </div>
-                  <div class="category">
-                      <span>BlinkIt</span>
-                  </div>
-                  <div class="amount">
-                      <span>&#8377 54000</span>
-                  </div>
-                  <div class="type">
-                      <i class="material-icons">arrow_outward</i>
-                  </div>
-              </div>
-              <div class="descriptionFooter">
-                  <span class="desc">Groceries</span>
-                  <span class="datetime">26-03-2024 . 03:10 PM</span>
-              </div>
+          <div class="expense-card income">
+            <div class="icon">💼</div>
+            <div class="details">
+                <h3>Salary</h3>
+                <p>Credited to Savings Account</p>
+                <p>2025-02-01 | 09:00 AM</p>
+            </div>
+            <div class="amount positive">+ ₹50,000</div>
           </div>
         </div>
       </div>
