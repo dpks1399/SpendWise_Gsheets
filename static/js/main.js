@@ -106,14 +106,6 @@ function editDeleteTransaction(id) {
   alert("edit or delete" + id);
 }
 
-function getCurrentTime(now) {
-  const hours = now.getHours().toString().padStart(2, "0");
-  const minutes = now.getMinutes().toString().padStart(2, "0");
-  const seconds = now.getSeconds().toString().padStart(2, "0");
-
-  return `${hours}:${minutes}:${seconds}`;
-}
-
 function populateTransactions(txns) {
   let records = "";
   for (let i = 0; i < txns.length; i += 1) {
@@ -123,24 +115,27 @@ function populateTransactions(txns) {
     let amount = txns[i].AMOUNT;
     let description = txns[i].DESCRIPTION;
     let datetime = txns[i].DATETIME;
-    console.log(datetime);
     let type = txns[i].TYPE;
-    console.log(type);
     let col = "";
-    col =
+    borderColor =
       type == "expenditure"
         ? "softRed"
         : type == "income"
         ? "softGreen"
         : "softYellow";
+    let fontColor = borderColor == "softRed" ? "#FF4D4D" : "#4CAF50";
 
     let txn_block = `
-                    <div class="viewTxnCard ${col}" id="txn-record-${id}" onclick=editDeleteTransaction("txn-record-${id}")>\
+                    <div class="viewTxnCard ${borderColor}" id="txn-record-${id}" onclick=editDeleteTransaction("txn-record-${id}")>\
                         <div class="date">\
-                            <div class="txn_date">${datetime.getDate()}</div>\
-                            <div class="txn_month">${
-                              monthNames[datetime.getMonth()]
-                            }</div>\
+                            <div class="txn_date">${datetime.substring(
+                              0,
+                              2
+                            )}</div>\
+                            <div class="txn_month">${datetime.substring(
+                              3,
+                              6
+                            )}</div>\
                         </div>\
                         <div class="content">\
                             <div class="txn_details">\
@@ -149,12 +144,13 @@ function populateTransactions(txns) {
                                 </div>\
                                 <div class="txn_additionalDetails">\
                                 <div class="txn_category">${category} - ${source}</div>\
-                                <div class="txn_time">${getCurrentTime(
-                                  datetime
+                                <div class="txn_time">${datetime.substring(
+                                  14,
+                                  19
                                 )}</div>\
                                 </div>\
                             </div>\
-                            <div class="txn_amount" style="color : ${col}">\
+                            <div class="txn_amount" style="color : ${fontColor}">\
                                 <span>&#8377 ${amount}</span>\
                             </div>\
                         </div>\
