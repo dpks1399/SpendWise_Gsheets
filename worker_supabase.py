@@ -1,8 +1,19 @@
 import psycopg2
 import json
 
-# SCHEMA = 'sw_v2'
-SCHEMA = 'sw_usr_001'
+def load_db_creds():
+    try:
+        with open('creds_supabase.json', 'r') as f:
+            creds = json.load(f)
+        return creds
+    except FileNotFoundError:
+        print("creds file not found")
+        return None
+    except json.JSONDecodeError:
+        print("Error decoding creds")
+        return None
+
+SCHEMA = dict(load_db_creds())["SCHEMA"]
 
 def inr_format(amount):
     amount = str(amount)
@@ -24,17 +35,6 @@ def inr_format(amount):
     
     return f"{formatted_whole}.{decimal}" if decimal else formatted_whole
 
-def load_db_creds():
-    try:
-        with open('creds_supabase.json', 'r') as f:
-            creds = json.load(f)
-        return creds
-    except FileNotFoundError:
-        print("creds.json file not found")
-        return None
-    except json.JSONDecodeError:
-        print("Error decoding creds.json")
-        return None
 
 def get_db_connection():
     creds = load_db_creds()
