@@ -466,6 +466,9 @@ body {
 .rec-record .content{
     flex-grow: 1;
     padding: 0px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 .paid {
     background-color: #d4edda;

@@ -49,7 +49,7 @@ function populateRecurring(txns){
                     </div>
                     <div class="content">
                         <h4>${cat_name}</h4>
-                        <span>Amount: &#8377 ${amount}</span>
+                        <span>&#8377 ${amount}</span>
                     </div>
                     <div class="status">
                         <span>${type_text}</span>
