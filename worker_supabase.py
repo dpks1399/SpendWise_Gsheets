@@ -1,5 +1,6 @@
 import psycopg2
 import json
+import datetime
 
 def load_db_creds():
     try:
@@ -35,6 +36,9 @@ def inr_format(amount):
     
     return f"{formatted_whole}.{decimal}" if decimal else formatted_whole
 
+def convert_to_dict(cols,rows):
+    data_dicts = [dict(zip(cols, row)) for row in rows]
+    return data_dicts
 
 def get_db_connection():
     creds = load_db_creds()
@@ -73,9 +77,10 @@ def fetch_query(query, params=None):
         try:
             cursor = conn.cursor()
             cursor.execute(query, params)
+            header = [desc[0].upper() for desc in cursor.description]  # Get column names
             result = cursor.fetchall()
             cursor.close()
-            return result
+            return header, result
         except psycopg2.Error as e:
             print(f"Error fetching query: {e}")
             return None
@@ -107,16 +112,41 @@ def fetch_transactions_as_dict(query):
 
 def getSources():
     query = f'select distinct name,id from {SCHEMA}.accounts_master order by id;'
-    result = fetch_query(query)
+    _, result = fetch_query(query)
     sources = [{'value': name, 'id': id} for name, id in result]
     return sources
 
 def getCategories():
     query = f'select distinct category,type,id from {SCHEMA}.categories order by type,id;'
-    result = fetch_query(query)
+    _, result = fetch_query(query)
     print(result)
     categories =[{'value': category, 'id': id} for category, _, id in result]
     return categories
+
+def getRecurring():
+    query = f'''               
+                SELECT 
+                    r.id,
+                    c.category AS category_name,
+                    r.amount,
+                    a.name AS account_name,
+                    r.pay_day,
+                    t.datetime AS payment_ts 
+                FROM sw_gusr_001.recurring r
+                JOIN sw_gusr_001.categories c ON r.cat_id = c.id
+                JOIN sw_gusr_001.accounts_master a ON r.source = a.id
+                LEFT JOIN sw_gusr_001.transactions_master t 
+                    ON r.cat_id = t.category
+                    AND DATE_TRUNC('month', t.datetime) = DATE_TRUNC('month', CURRENT_DATE)
+                order by r.pay_day;  
+    '''
+    cols, result = fetch_query(query)
+    rec = convert_to_dict(cols,result)
+    for item in rec:
+        item["PAY_DAY"] = f"{item['PAY_DAY']} {datetime.datetime.now().strftime('%b')}"
+    # print(rec)
+    # categories =[{'value': category, 'id': id} for category, _, id in result]
+    return rec
 
 def getTransactions():
     query = f'''

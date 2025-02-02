@@ -1,13 +1,66 @@
 
 document.addEventListener("DOMContentLoaded", function() {
-    fetchCategories();
+    fetchCategories();  // remove paid recurring categories
     fetchSources();
     fetchTransactions();
+    fetchRecurring();
     showScreen('home-screen');  // Show the Add Transaction screen by default
     addTxnPopup(1);
 });
 
-// Your original function to send transaction data
+function fetchRecurring(){
+    fetch('/api/get_recurring')
+    .then(response => response.json())
+    .then(recurring => {
+        populateRecurring(recurring);
+    })
+    .catch(error => {
+        console.error('Error fetching sources:', error);
+    });
+}
+
+function populateRecurring(txns){
+    console.log(txns)
+    let records = ''
+    for(let i=0; i<txns.length; i+=1){
+        let pay_day = txns[i].PAY_DAY;
+        let day = pay_day.split(' ')[0];
+        let month = pay_day.split(' ')[1];
+        let cat_name = txns[i].CATEGORY_NAME;
+        let amount = txns[i].AMOUNT;
+        let id = txns[i].ID;
+        let ts = txns[i].PAYMENT_TS;
+        let type = '';
+        let type_text = '';
+        if(ts){
+            type = 'paid'
+            type_text = 'Paid'
+        }
+        else{
+            type = 'unpaid'
+            type_text = 'Unpaid'
+        }
+    
+        block = `
+                <div class="rec-record ${type}" id="">
+                    <div class="date">
+                        <div class="txn_date">${day}</div>
+                        <div class="txn_month">${month}</div>
+                    </div>
+                    <div class="content">
+                        <h4>${cat_name}</h4>
+                        <span>Amount: &#8377 ${amount}</span>
+                    </div>
+                    <div class="status">
+                        <span>${type_text}</span>
+                    </div>
+                </div>
+            `
+        records = records + block;
+    }
+    document.getElementById('recPayments').innerHTML = records
+}
+
 function sendInsertTxnData(data) {
     fetch('/api/insert_transaction', {
         method: 'POST',
@@ -117,27 +170,6 @@ function populateTransactions(txns){
             t_val = 'income'
         }
         
-        // let txn_block = `<div class="viewTxnCard" id="txn-record-${id}" onclick=editDeleteTransaction("txn-record-${id}")>\
-        //                     <div class="content">\
-        //                         <div class="source">\
-        //                             <span>${source}</span>\
-        //                         </div>\
-        //                         <div class="category">\
-        //                             <span>${category}</span>\
-        //                         </div>\
-        //                         <div class="amount">\
-        //                             <span>&#8377 ${amount}</span>\
-        //                         </div>\
-        //                         <div class="type">\
-        //                             <i class="material-icons">arrow_outward</i>\
-        //                         </div>\
-        //                     </div>\
-        //                     <div class="descriptionFooter ${col}">\
-        //                         <span class="desc">${description}</span>\
-        //                         <span class="datetime">${datetime}</span>\
-        //                     </div>\
-        //                     </div>`
-
         let txn_block = ` <div class="expense-card ${t_val}">
                             <div class="icon">💰</div>
                             <div class="details">
@@ -149,7 +181,6 @@ function populateTransactions(txns){
                         </div>
                         `
 
-        // console.log(txn_block)
         records = records + txn_block
     }
     document.getElementById('view-Txn-Container').innerHTML = records
