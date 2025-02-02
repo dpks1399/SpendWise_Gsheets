@@ -343,22 +343,40 @@ function toggleMenu(){
     document.getElementById("menuContainer").classList.toggle("active");
 }
 
+function selectNav(id){
+    const navs = document.querySelectorAll('.nav-item');
+    navs.forEach(nav => {
+        nav.classList.remove("nav-active");
+    });
+
+    const activeNav = document.getElementById(id);
+    // const title = document.getElementById("screenTitle");
+    if (activeNav) {
+        activeNav.classList.add("nav-active");
+        // title.textContent = activeScreen.getAttribute("name")
+        // console.log(activeScreen.getAttribute("name"))
+    }
+}
 
 // Event listeners for bottom navigation
 document.getElementById('nav-home').addEventListener('click', () => {
     showScreen('home-screen');
+    selectNav('nav-home');
 });
 
 document.getElementById('nav-view-transactions').addEventListener('click', () => {
     showScreen('view-transactions-screen');
+    selectNav('nav-view-transactions');
 });
 
 document.getElementById('nav-overview').addEventListener('click', () => {
     showScreen('overview-screen');
+    selectNav('nav-overview');
 });
 
 document.getElementById('nav-recurring').addEventListener('click', () => {
     showScreen('recurring-screen');
+    selectNav('nav-recurring');
 });
 
 document.getElementById('menuOpen').addEventListener('click', () => {
