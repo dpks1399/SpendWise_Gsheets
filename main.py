@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 import configparser
-from worker_supabase import getSources, getCategories, insertTxn, getTransactions, getRecurring
+from worker_supabase import getSources, getCategories, insertTxn, getTransactions, getRecurring, fetchAccountOverview
     
 app = Flask(__name__)
 
@@ -28,6 +28,10 @@ def get_transactions():
     txns = getTransactions()
     return jsonify(txns)
 
+@app.route('/api/get_acc_overview', methods=['GET'])
+def get_acc_overview():
+    txns = fetchAccountOverview()
+    return jsonify(txns)
     
 @app.route('/api/insert_transaction', methods=['POST'])
 def process_data():

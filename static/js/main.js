@@ -2,11 +2,23 @@
 document.addEventListener("DOMContentLoaded", function() {
     fetchCategories();  // remove paid recurring categories
     fetchSources();
+    fetchOverview();
     fetchTransactions();
     fetchRecurring();
     showScreen('home-screen');  // Show the Add Transaction screen by default
     // addTxnPopup(1);
 });
+
+function fetchOverview(){
+    fetch('/api/get_acc_overview')
+    .then(response => response.json())
+    .then(stats => {
+        populateAccOverview(stats);
+    })
+    .catch(error => {
+        console.error('Error fetching sources:', error);
+    });
+}
 
 function fetchRecurring(){
     fetch('/api/get_recurring')
@@ -17,6 +29,28 @@ function fetchRecurring(){
     .catch(error => {
         console.error('Error fetching sources:', error);
     });
+}
+
+function populateAccOverview(data){
+    console.log(data);
+    let records = ''
+    for(let i=0; i<data.length; i+=1){
+        let name = data[i].NAME;
+        let bal = data[i].CURRENT_BALANCE;
+        let due = data[i].TOTAL_UNPAID_AMOUNT;
+        let spare = parseFloat(bal) - parseFloat(due);
+        
+        let block = `
+                    <tr>
+                        <td>${name}</td>
+                        <td>${bal}</td>
+                        <td>${due}</td>
+                        <td>${spare}</td>
+                    </tr>
+                    `
+        records = records + block;
+    }
+    document.getElementById('overview-tabe-body').innerHTML = records
 }
 
 function populateRecurring(txns){
@@ -75,7 +109,7 @@ function sendInsertTxnData(data) {
             fetchCategories();
             resetTxn();
             alert("Transaction Saved");
-            addTxnPopup(0);
+            // addTxnPopup(0);
             fetchTransactions();
         } else {
             console.log('Could not save transaction.');
@@ -140,8 +174,18 @@ function fetchTransactions(){
     });
 }
 
+function toggleOverlay(val){
+    if(val==1){
+       document.getElementById('overlay').style.display = 'block'; 
+    }
+    else if(val == 0){
+        document.getElementById('overlay').style.display = 'none'; 
+    }
+}
+
 function editDeleteTransaction(id){
-    alert("edit or delete"+id);
+    // alert("edit or delete"+id);
+    toggleOverlay(1);
 }
 
 function populateTransactions(txns){
@@ -169,7 +213,7 @@ function populateTransactions(txns){
             t_val = 'income'
         }
         
-        let txn_block = ` <div class="expense-card ${t_val}">
+        let txn_block = ` <div class="expense-card ${t_val}" id="${id}" onclick="editDeleteTransaction(${id})">
                             <div class="icon">💰</div>
                             <div class="details">
                                 <h3>${category}</h3>
@@ -303,7 +347,7 @@ function addTxn() {
 
 // Reset transaction form
 function resetTxn() {
-    document.getElementById("transaction-type-sc01").value = 'expenditure';
+    changeTxnTyp(0);
     document.getElementById("amount-sc01").value = '';
     document.getElementById("description-sc01").value = '';
     document.getElementById("custom-category-input").value = '';

@@ -131,7 +131,7 @@ body {
     text-align: center;
 }
 
-.addTxnBtnDiv button{
+.floating-button button{
     position: fixed;
     bottom: 80px;
     right: 20px;
@@ -596,4 +596,57 @@ body {
 .skipped {
     background-color: #cce5ff;
     color: #004085;
+}
+
+.menu-section{
+
+}
+.menu-item{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 0px 20px;
+    gap: 20px;
+    color: var(--g4);
+}
+
+/* 
+####################################################################################
+DISPOSABLE - Temporary css for temporary elements. May not be used later 
+####################################################################################
+ */
+
+ .homeScreenContent h3{
+    margin: 10px;
+ }
+
+table {
+    /* width: 100%; */
+    margin: 10px;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f4f8;
+    font-weight: bold;
+}
+
+.overlay{
+    height: 100%;
+    width: 100%;
+    background-color: rgb(75 68 68 / 80%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
 }

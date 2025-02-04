@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
+    <div class="overlay" id="overlay" onclick="toggleOverlay(0)" style="display: none;"></div>
     <div class="app-bar">
       <div class="menu-icon" id="titleIcon">
         <i class="material-icons" id="menuOpen" style="display: block;">menu</i>
@@ -26,6 +27,41 @@
         <div class="menu-close"><i class="material-icons" id="menuClose">close</i></div>
       </div>
       <hr>
+      <div class="menu-section">
+        <div class="menu-item">
+          <i class="material-icons">home</i><span>Home</span>
+        </div>
+        <div class="menu-item">
+          <i class="material-icons">view_list</i><span>Transactions</span>
+        </div>
+        <div class="menu-item">
+          <i class="material-icons">fact_check</i><span>Budgets</span>
+        </div>
+        <div class="menu-item">
+          <i class="material-icons">event_repeat</i><span>Recurring</span>
+        </div>
+      </div>
+      <hr>
+      <div class="menu-section">
+        <div class="menu-item">
+          <i class="material-icons">category</i><span>Categories</span>
+        </div>
+        <div class="menu-item">
+          <i class="material-icons">account_balance</i><span>Accounts</span>
+        </div>
+        <div class="menu-item">
+          <i class="material-icons">trending_up</i><span>Reports</span>
+        </div>
+      </div>
+      <hr>
+      <div class="menu-section">
+        <div class="menu-item">
+          <i class="material-icons">upload</i><span>Export</span>
+        </div>
+        <div class="menu-item">
+          <i class="material-icons">download</i><span>Import</span>
+        </div>
+      </div>
     </div>
     <div class="main-content">
       <div class="screen" id="home-screen" name="Home">
@@ -45,10 +81,35 @@
                 </div>
             </div>
           </div>--> 
+          <h3>Accounts Overview</h3>
+          <table border="1">
+            <thead>
+                <tr>
+                    <th>Account</th>
+                    <th>Current Balance</th>
+                    <th>Total Dues</th>
+                    <th>Total Spare</th>
+                </tr>
+            </thead>
+            <tbody id="overview-tabe-body">
+                <tr>
+                    <td>John Doe</td>
+                    <td>$1,500</td>
+                    <td>$200</td>
+                    <td>$1,300</td>
+                </tr>
+                <tr>
+                    <td>Jane Smith</td>
+                    <td>$3,200</td>
+                    <td>$500</td>
+                    <td>$2,700</td>
+                </tr>
+            </tbody>
+          </table>
           
         </div>
         
-        <div class="addTxnBtnDiv" id="">
+        <div class="floating-button" id="">
           <button id="addTnxPopBtn" onclick="addTxnPopup(1)">+</button>
         </div>
       </div>
@@ -77,7 +138,9 @@
         </div>
       </div>
       <div class="screen" id="overview-screen" name="Budgets" style="display: none;">
-        <!-- <div class="heading1">Overview (Placeholder)</div> -->
+        <div class="floating-button" id="">
+          <button id="" onclick="">+</button>
+        </div>
       </div>
       <div class="screen" id="recurring-screen" name="Recurring" style="display: none;">
         <div class="rec-payments" id="recPayments">
@@ -133,6 +196,9 @@
               <span>Skipped</span>
             </div>
           </div>
+        </div>
+        <div class="floating-button" id="">
+          <button id="" onclick="">+</button>
         </div>
       </div>
       <div class="screen" id="reports-screen" name="Reports" style="display: none;">

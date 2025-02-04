@@ -203,23 +203,74 @@ def insertTxn(data):
     else:
         return {'status':'fail', 'result':'could not connect'}
 
+def fetchAccountOverview():
+    total_bal_query = '''
+                SELECT 
+                a.id, 
+                a.name, 
+                a.balance + COALESCE(SUM(
+                    CASE 
+                        WHEN t.type = 'income' THEN t.amount
+                        WHEN t.type = 'expenditure' THEN -t.amount
+                        ELSE 0
+                    END
+                ), 0) AS current_balance
+            FROM sw_gusr_001.accounts_master a
+            LEFT JOIN sw_gusr_001.transactions_master t 
+                ON a.id = t.source 
+                AND t.datetime > a.updated_at  -- Only consider transactions after last update
+            GROUP BY a.id, a.name, a.balance
+            ORDER BY a.id;
+    '''
+    total_dues_query = '''
+                            SELECT 
+                                a.id AS account_id, 
+                                COALESCE(SUM(r.amount), 0) AS total_unpaid_amount  
+                            FROM sw_gusr_001.accounts_master a
+                            LEFT JOIN sw_gusr_001.recurring r 
+                                ON a.id = r.source  
+                            LEFT JOIN sw_gusr_001.transactions_master t 
+                                ON r.cat_id = t.category 
+                                AND r.source = t.source  
+                                AND DATE_TRUNC('month', t.datetime) = DATE_TRUNC('month', CURRENT_DATE)  
+                            WHERE 
+                                t.id IS NULL  
+                            GROUP BY 
+                                a.id  
+                            ORDER BY 
+                                a.id;  
+                        '''
+    cols,rows = fetch_query(total_bal_query)
+    bal = convert_to_dict(cols,rows)
+    cols,rows = fetch_query(total_dues_query)
+    dues = convert_to_dict(cols,rows)
+    combined_list = []
+    for item1 in bal:
+        matching_item = next((item2 for item2 in dues if item2['ACCOUNT_ID'] == item1['ID']), None)
+        if matching_item:
+            combined_item = {**item1, **matching_item}
+            combined_item.pop('ACCOUNT_ID')
+            combined_list.append(combined_item)
+    # print(combined_list)
+    return(combined_list)
+
 
 def test():
     # print(getCategories())
     # print(getSources())
-    
+    fetchAccountOverview()
 
-    data_obj = {
-        'type': "expenditure",
-        'amount': '2',
-        'description': "tst",
-        'category': "-1",
-        'cust_category':"trying",
-        'source': "1",
-        'datetime': "2024-09-25 21:33:00"
-    }
-    print(insertTxn(data_obj))
-    # print(getTransactions())
+    # data_obj = {
+    #     'type': "expenditure",
+    #     'amount': '2',
+    #     'description': "tst",
+    #     'category': "-1",
+    #     'cust_category':"trying",
+    #     'source': "1",
+    #     'datetime': "2024-09-25 21:33:00"
+    # }
+    # print(insertTxn(data_obj))
+    # # print(getTransactions())
 
 if __name__ == '__main__':
     test();   
