@@ -143,6 +143,7 @@ def getRecurring():
     cols, result = fetch_query(query)
     rec = convert_to_dict(cols,result)
     for item in rec:
+        item['PAY_STATUS'] = 'Paid' if item['PAYMENT_TS'] else 'Overdue' if (int(datetime.datetime.now().day) >= int(item['PAY_DAY'])) else 'Unpaid'
         item["PAY_DAY"] = f"{item['PAY_DAY']} {datetime.datetime.now().strftime('%b')}"
     # print(rec)
     # categories =[{'value': category, 'id': id} for category, _, id in result]

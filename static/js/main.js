@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fetchTransactions();
     fetchRecurring();
     showScreen('home-screen');  // Show the Add Transaction screen by default
-    addTxnPopup(1);
+    // addTxnPopup(1);
 });
 
 function fetchRecurring(){
@@ -31,18 +31,17 @@ function populateRecurring(txns){
         let id = txns[i].ID;
         let ts = txns[i].PAYMENT_TS;
         let type = '';
-        let type_text = '';
-        if(ts){
-            type = 'paid'
-            type_text = 'Paid'
-        }
-        else{
-            type = 'unpaid'
-            type_text = 'Unpaid'
-        }
+        let type_text = txns[i].PAY_STATUS;
+        // if(ts){
+        //     type = 'paid'
+        // }
+        // else{
+        //     type = 'unpaid'
+        // }
+        type = (type_text == 'Paid') ? 'paid' : (type_text == 'Overdue') ? 'overdue' : 'unpaid';
     
         block = `
-                <div class="rec-record ${type}" id="">
+                <div class="rec-record ${type}" id="${id}">
                     <div class="date">
                         <div class="txn_date">${day}</div>
                         <div class="txn_month">${month}</div>
@@ -192,9 +191,11 @@ function populateDropdown(dropdownId, items) {
     const dropdown = document.getElementById(dropdownId);
     dropdown.innerHTML = ''; // Clear any existing options
 
+    let def = dropdownId == 'category-drop-sc01'? 'Category' : dropdownId == 'source-drop-sc01'? 'Account' : '' ;
+
     const option = document.createElement('option');
     option.value = '';
-    option.textContent = 'Please Select';
+    option.textContent = 'Select ' + def;
     option.selected = true;
     dropdown.appendChild(option);
 
@@ -244,7 +245,8 @@ function addNewCategory(name,type){
 
 // Add transaction function (untouched as per your original code)
 function addTxn() {
-    var transactionType = document.getElementById("transaction-type-sc01").value;
+    var type_element = document.querySelector(".txn-type-container .selected");
+    var transactionType = type_element.getAttribute("name")
     var amount = document.getElementById("amount-sc01").value;
     var description = document.getElementById("description-sc01").value;
     var category = '-1';
@@ -311,7 +313,7 @@ function resetTxn() {
 }
 
 // Handle screen switching for bottom nav bar
-function showScreen(screenId) {
+function showScreen(screenId, icon='default') {
     const screens = document.querySelectorAll('.screen');
     screens.forEach(screen => {
         screen.style.display = 'none';
@@ -322,22 +324,39 @@ function showScreen(screenId) {
     if (activeScreen) {
         activeScreen.style.display = 'block';
         title.textContent = activeScreen.getAttribute("name")
+        const title_icon = document.getElementById('titleIcon');
+        if (icon == 'default'){
+            document.getElementById('backHome').style.display = 'none';
+            document.getElementById('menuOpen').style.display = 'block';
+        }
+        else if (icon == 'back'){
+            document.getElementById('menuOpen').style.display = 'none';
+            document.getElementById('backHome').style.display = 'block';
+        }
         // console.log(activeScreen.getAttribute("name"))
     }
 }
 
 function addTxnPopup(val){
     if(val == 0){
-        document.getElementById("addTxnPopup").style.display = "none";
-        document.getElementById("addTnxPopBtn").style.display = "block";
-        document.getElementById("home-screen-content").style.display = "block";
+        showScreen('home-screen');
+        // document.getElementById("addTxnPopup").style.display = "none";
+        // document.getElementById("addTnxPopBtn").style.display = "block";
+        // document.getElementById("home-screen-content").style.display = "block";
     }
     else if(val == 1){
-        document.getElementById("home-screen-content").style.display = "none";
-        document.getElementById("addTxnPopup").style.display = "block";
-        document.getElementById("addTnxPopBtn").style.display = "none";
+        showScreen('add-transaction-screen','back');
+        // document.getElementById("home-screen-content").style.display = "none";
+        // document.getElementById("addTxnPopup").style.display = "block";
+        // document.getElementById("addTnxPopBtn").style.display = "none";
     }
+    
 }
+
+// function titleBack(){
+//     showScreen('home-screen');
+//     selectNav('nav-home');
+// }
 
 function toggleMenu(){
     document.getElementById("menuContainer").classList.toggle("active");
@@ -356,6 +375,18 @@ function selectNav(id){
         // title.textContent = activeScreen.getAttribute("name")
         // console.log(activeScreen.getAttribute("name"))
     }
+}
+
+function changeTxnTyp(val){
+    const exp = document.getElementById("type-btn-expenditure");
+    const inc = document.getElementById("type-btn-income");
+    const trn = document.getElementById("type-btn-transfer");
+    exp.classList.remove("selected");
+    inc.classList.remove("selected");
+    trn.classList.remove("selected");
+    if(val == 0){exp.classList.add("selected");}
+    else if(val == 1){inc.classList.add("selected");}
+    else if(val == 2){trn.classList.add("selected");}
 }
 
 // Event listeners for bottom navigation
@@ -387,6 +418,10 @@ document.getElementById('menuClose').addEventListener('click', () => {
     toggleMenu();
 });
 
-// document.getElementById('nav-reports').addEventListener('click', () => {
+document.getElementById('backHome').addEventListener('click', () => {
+    showScreen('home-screen');
+    selectNav('nav-home');
+});
+// // document.getElementById('nav-reports').addEventListener('click', () => {
 //     showScreen('reports-screen');
 // });
