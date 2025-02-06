@@ -117,7 +117,17 @@ def getSources():
     return sources
 
 def getCategories():
-    query = f'select distinct category,type,id from {SCHEMA}.categories order by type,id;'
+    query = f'''
+                SELECT c.category,c.type,c.id
+                FROM sw_gusr_001.categories c
+                LEFT JOIN sw_gusr_001.transactions_master t 
+                    ON c.id = t.category 
+                    AND c.type = 1  -- Only check transactions for income categories
+                    AND DATE_TRUNC('month', t.datetime) = DATE_TRUNC('month', CURRENT_DATE)
+                where 
+                    c.type = 0 or t.id is null
+                order by c.type,c.id;
+            '''
     _, result = fetch_query(query)
     print(result)
     categories =[{'value': category, 'id': id} for category, _, id in result]
@@ -205,27 +215,40 @@ def insertTxn(data):
 
 def fetchAccountOverview():
     total_bal_query = '''
-                SELECT 
-                a.id, 
-                a.name, 
-                a.balance + COALESCE(SUM(
-                    CASE 
-                        WHEN t.type = 'income' THEN t.amount
-                        WHEN t.type = 'expenditure' THEN -t.amount
-                        ELSE 0
-                    END
-                ), 0) AS current_balance
-            FROM sw_gusr_001.accounts_master a
-            LEFT JOIN sw_gusr_001.transactions_master t 
-                ON a.id = t.source 
-                AND t.datetime > a.updated_at  -- Only consider transactions after last update
-            GROUP BY a.id, a.name, a.balance
-            ORDER BY a.id;
-    '''
+                            SELECT 
+                            a.id, 
+                            a.name,
+                            a.balance as initial_balance, 
+                            a.balance + COALESCE(SUM(
+                                CASE 
+                                    WHEN t.type = 'income' THEN t.amount
+                                    WHEN t.type = 'expenditure' THEN -t.amount
+                                    ELSE 0
+                                END
+                            ), 0) AS current_balance,
+                            SUM(
+                                CASE 
+                                    WHEN t.type = 'income' THEN t.amount
+                                    ELSE 0
+                                END
+                            ) AS total_income,
+                            SUM(
+                                CASE 
+                                    WHEN t.type = 'expenditure' THEN t.amount
+                                    ELSE 0
+                                END
+                            ) AS total_expense
+                        FROM sw_gusr_001.accounts_master a
+                        LEFT JOIN sw_gusr_001.transactions_master t 
+                            ON a.id = t.source 
+                            AND t.datetime > a.updated_at  -- Only consider transactions after last update
+                        GROUP BY a.id, a.name, a.balance
+                        ORDER BY a.id;
+                    '''
     total_dues_query = '''
                             SELECT 
                                 a.id AS account_id, 
-                                COALESCE(SUM(r.amount), 0) AS total_unpaid_amount  
+                                COALESCE(SUM(r.amount), 0) AS total_dues  
                             FROM sw_gusr_001.accounts_master a
                             LEFT JOIN sw_gusr_001.recurring r 
                                 ON a.id = r.source  
@@ -252,6 +275,8 @@ def fetchAccountOverview():
             combined_item.pop('ACCOUNT_ID')
             combined_list.append(combined_item)
     # print(combined_list)
+    for item in combined_list:
+        item['SPARE_AMOUNT'] = float(item['CURRENT_BALANCE']) - float(item['TOTAL_DUES'])
     return(combined_list)
 
 
