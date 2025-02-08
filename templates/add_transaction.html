@@ -24,7 +24,7 @@
     <div class="menu-container" id="menuContainer">
       <div class="menu-header">
         <div class="menu-logo"><img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Description"></div>
-        <div class="menu-close"><i class="material-icons" id="menuClose">close</i></div>
+        <!-- <div class="menu-close"><i class="material-icons" id="menuClose">close</i></div> -->
       </div>
       <hr>
       <div class="menu-section">
@@ -63,50 +63,24 @@
         </div>
       </div>
     </div>
+    <div class="overlay" id="menu-overlay" style="display: none;"></div>
     <div class="main-content">
       <div class="screen" id="home-screen" name="Home">
         <div class="homeScreenContent" id="home-screen-content">
-         <!--  <div class="card">
-            <div class="logo">Account Info</div>
-            <div class="account-name">Savings Account</div>
-            <div class="total-balance">Total Balance: $12,345</div>
-            <div class="balance-info">
-                <div>
-                    <span>Fixed Expenses</span><br>
-                    <span class="amount">$2,500</span>
-                </div>
-                <div>
-                    <span>Available to Spend</span><br>
-                    <span class="amount">$9,845</span>
+          <!-- <div class="acc-overview">
+            <h3>Monthly Accounts Overview</h3>
+            <table border="1" id="overviewTable">
+            </table>
+          </div> -->
+          <div class="slider-container">
+            <!-- <h3>Monthly Accounts Overview</h3> -->
+            <div class="slider" id="slider">
+                <div class="overview-card overview-placeholder">
+                  <span>Loading...</span>
                 </div>
             </div>
-          </div>--> 
-          <h3>Accounts Overview</h3>
-          <table border="1" id="overviewTable">
-            <!-- <thead>
-                <tr>
-                    <th>Account</th>
-                    <th>Current Balance</th>
-                    <th>Total Dues</th>
-                    <th>Total Spare</th>
-                </tr>
-            </thead>
-            <tbody id="overview-tabe-body">
-                <tr>
-                    <td>John Doe</td>
-                    <td>$1,500</td>
-                    <td>$200</td>
-                    <td>$1,300</td>
-                </tr>
-                <tr>
-                    <td>Jane Smith</td>
-                    <td>$3,200</td>
-                    <td>$500</td>
-                    <td>$2,700</td>
-                </tr>
-            </tbody> -->
-          </table>
-          
+          <div class="dots" id="dots"></div>
+        </div>
         </div>
         
         <div class="floating-button" id="">
@@ -118,7 +92,7 @@
 
         <div class="viewTxnContainer" id="view-Txn-Container">
           <div class="expense-card expense">
-            <div class="icon">💰</div>
+            <div class="icon"><img class="txn-logo" src="{{ url_for('static', filename='assets/banklogos/idfb.png') }}"></div>
             <div class="details">
                 <h3>Food & Dining</h3>
                 <p>McDonald's Lunch - Visa Card</p>

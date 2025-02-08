@@ -152,8 +152,10 @@ def getRecurring():
     '''
     cols, result = fetch_query(query)
     rec = convert_to_dict(cols,result)
+    print(rec)
     for item in rec:
         item['PAY_STATUS'] = 'Paid' if item['PAYMENT_TS'] else 'Overdue' if (int(datetime.datetime.now().day) >= int(item['PAY_DAY'])) else 'Unpaid'
+        item['PAYMENT_TS'] = item['PAYMENT_TS'].strftime('%d %b') if item['PAYMENT_TS'] else ''
         item["PAY_DAY"] = f"{item['PAY_DAY']} {datetime.datetime.now().strftime('%b')}"
     # print(rec)
     # categories =[{'value': category, 'id': id} for category, _, id in result]
@@ -166,6 +168,7 @@ def getTransactions():
                     t.amount,
                     c.category AS category,
                     a.name AS source,
+                    a.identifier,
                     t.description,
                     t.type,
                     t.datetime
@@ -218,6 +221,7 @@ def fetchAccountOverview():
                             SELECT 
                             a.id, 
                             a.name,
+                            a.identifier,
                             a.balance as initial_balance, 
                             a.balance + COALESCE(SUM(
                                 CASE 
@@ -276,7 +280,13 @@ def fetchAccountOverview():
             combined_list.append(combined_item)
     # print(combined_list)
     for item in combined_list:
-        item['SPARE_AMOUNT'] = float(item['CURRENT_BALANCE']) - float(item['TOTAL_DUES'])
+        item['SPARE_AMOUNT'] = inr_format(float(item['CURRENT_BALANCE']) - float(item['TOTAL_DUES']))
+        item['CURRENT_BALANCE'] = inr_format(item['CURRENT_BALANCE'])
+        item['INITIAL_BALANCE'] = inr_format(item['INITIAL_BALANCE'])
+        item['TOTAL_DUES'] = inr_format(item['TOTAL_DUES'])
+        item['TOTAL_EXPENSE'] = inr_format(item['TOTAL_EXPENSE'])
+        item['TOTAL_INCOME'] = inr_format(item['TOTAL_INCOME'])
+
     return(combined_list)
 
 

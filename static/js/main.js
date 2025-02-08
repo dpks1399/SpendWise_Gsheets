@@ -33,50 +33,97 @@ function fetchRecurring(){
 
 function populateAccOverview(data){
     console.log(data);
-    const table = document.getElementById("overviewTable");
+    // const table = document.getElementById("overviewTable");
 
-    if (data.length === 0) return;
+    // if (data.length === 0) return;
 
-    // Extract all keys (headers) from the first object
-    const keys = ['NAME','INITIAL_BALANCE','TOTAL_INCOME','TOTAL_EXPENSE','CURRENT_BALANCE','TOTAL_DUES','SPARE_AMOUNT']
+    // // Extract all keys (headers) from the first object
+    // const keys = ['NAME','INITIAL_BALANCE','TOTAL_INCOME','TOTAL_EXPENSE','CURRENT_BALANCE','TOTAL_DUES','SPARE_AMOUNT']
 
-    // Create the table rows dynamically
-    keys.forEach(key => {
-        let row = document.createElement("tr");
+    // // Create the table rows dynamically
+    // keys.forEach(key => {
+    //     let row = document.createElement("tr");
 
-        // First cell (header)
-        let th = document.createElement("th");
-        th.textContent = key.replace(/_/g, " "); // Format header names
-        row.appendChild(th);
+    //     // First cell (header)
+    //     let th = document.createElement("th");
+    //     th.textContent = key.replace(/_/g, " "); // Format header names
+    //     row.appendChild(th);
 
-        // Fill the row with data for each account
-        data.forEach(obj => {
-            let td = document.createElement("td");
-            td.textContent = obj[key]; // Get value dynamically
-            row.appendChild(td);
-        });
+    //     // Fill the row with data for each account
+    //     data.forEach(obj => {
+    //         let td = document.createElement("td");
+    //         td.textContent = obj[key]; // Get value dynamically
+    //         row.appendChild(td);
+    //     });
 
-        // Append row to the table
-        table.appendChild(row);
-    });
-    // let records = ''
-    // for(let i=0; i<data.length; i+=1){
-    //     let name = data[i].NAME;
-    //     let bal = data[i].CURRENT_BALANCE;
-    //     let due = data[i].TOTAL_UNPAID_AMOUNT;
-    //     let spare = parseFloat(bal) - parseFloat(due);
+    //     // Append row to the table
+    //     table.appendChild(row);
+    // });
+    let records = ''
+    for(let i=0; i<data.length; i+=1){
+        let name = data[i].NAME;
+        let income = data[i].TOTAL_INCOME;
+        let expense = data[i].TOTAL_EXPENSE;
+        let balance = data[i].CURRENT_BALANCE;
+        let due = data[i].TOTAL_DUES;
+        let spare = data[i].SPARE_AMOUNT;
+        let identifier = data[i].IDENTIFIER;
         
-    //     let block = `
-    //                 <tr>
-    //                     <td>${name}</td>
-    //                     <td>${bal}</td>
-    //                     <td>${due}</td>
-    //                     <td>${spare}</td>
-    //                 </tr>
-    //                 `
-    //     records = records + block;
-    // }
-    // document.getElementById('overview-tabe-body').innerHTML = records
+        let block = `
+                <div class="overview-card">
+                    <div class="header">
+                        <h4>${name}</h4>
+                        <div class="overview-icon"><img src="static/assets/banklogos/${identifier}.png"></div>
+                    </div>
+                    <div class="body">
+                        <span>Net Available:</span>
+                        <span>&#8377 ${spare}</span>
+                    </div>
+                    <div class="footer">
+                        <div class="f1">
+                            <div>
+                                <span>Balance: </span>
+                                <span>&#8377 ${balance}</span>
+                            </div>
+                            <div>
+                                <span>Dues: </span>
+                                <span>&#8377 ${due}</span>
+                            </div>
+                        </div>
+                        <div class="f2">
+                            <div>
+                                <span>Income: </span>
+                                <span>&#8377 ${income}</span>
+                            </div>
+                            <div>
+                                <span>Expense: </span>
+                                <span>&#8377 ${expense}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    `
+        records = records + block;
+    }
+    document.getElementById('slider').innerHTML = records
+
+    const slider = document.getElementById("slider");
+    const dotsContainer = document.getElementById("dots");
+    const cards = document.querySelectorAll(".overview-card");
+
+    // Create dots dynamically
+    cards.forEach((_, index) => {
+        let dot = document.createElement("div");
+        dot.classList.add("dot");
+        if (index === 0) dot.classList.add("active"); // First dot active by default
+        dot.addEventListener("click", () => {
+            slider.scrollTo({
+                left: slider.clientWidth * index,
+                behavior: "smooth"
+            });
+        });
+        dotsContainer.appendChild(dot);
+    });
 }
 
 function populateRecurring(txns){
@@ -92,12 +139,7 @@ function populateRecurring(txns){
         let ts = txns[i].PAYMENT_TS;
         let type = '';
         let type_text = txns[i].PAY_STATUS;
-        // if(ts){
-        //     type = 'paid'
-        // }
-        // else{
-        //     type = 'unpaid'
-        // }
+        
         type = (type_text == 'Paid') ? 'paid' : (type_text == 'Overdue') ? 'overdue' : 'unpaid';
     
         block = `
@@ -108,7 +150,7 @@ function populateRecurring(txns){
                     </div>
                     <div class="content">
                         <h4>${cat_name}</h4>
-                        <span>&#8377 ${amount}</span>
+                        <span>&#8377 ${amount} | ${ts}</span>
                     </div>
                     <div class="status">
                         <span>${type_text}</span>
@@ -219,7 +261,8 @@ function populateTransactions(txns){
     let records = ''
     for(let i=0; i<txns.length; i+=1){
         let id = txns[i].ID;
-        let source = txns[i].SOURCE;
+        let source = txns[i].SOURCE //.split(" ").map(word => word[0]).join("").toUpperCase();
+        let identifier = txns[i].IDENTIFIER
         let category = txns[i].CATEGORY;
         let amount = txns[i].AMOUNT;
         let description = txns[i].DESCRIPTION;
@@ -240,7 +283,7 @@ function populateTransactions(txns){
         }
         
         let txn_block = ` <div class="expense-card ${t_val}" id="${id}" onclick="editDeleteTransaction(${id})">
-                            <div class="icon">💰</div>
+                            <div class="icon"><img class="txn-logo" src="static/assets/banklogos/${identifier}.png"></div>
                             <div class="details">
                                 <h3>${category}</h3>
                                 <p>${description}</p>
@@ -428,8 +471,15 @@ function addTxnPopup(val){
 //     selectNav('nav-home');
 // }
 
-function toggleMenu(){
-    document.getElementById("menuContainer").classList.toggle("active");
+function toggleMenu(val){
+    if(val == 1){
+        document.getElementById("menuContainer").classList.add("active");
+        document.getElementById("menu-overlay").style.display = 'block';
+    }
+    else if(val == 0){
+        document.getElementById("menuContainer").classList.remove("active");
+        document.getElementById("menu-overlay").style.display = 'none';
+    }
 }
 
 function selectNav(id){
@@ -459,6 +509,16 @@ function changeTxnTyp(val){
     else if(val == 2){trn.classList.add("selected");}
 }
 
+document.getElementById("slider").addEventListener("scroll", function() {
+    let scrollLeft = slider.scrollLeft;
+    let cardWidth = slider.clientWidth;
+    let currentIndex = Math.round(scrollLeft / cardWidth);
+
+    document.querySelectorAll(".dot").forEach((dot, index) => {
+        dot.classList.toggle("active", index === currentIndex);
+    });
+});
+
 // Event listeners for bottom navigation
 document.getElementById('nav-home').addEventListener('click', () => {
     showScreen('home-screen');
@@ -481,11 +541,11 @@ document.getElementById('nav-recurring').addEventListener('click', () => {
 });
 
 document.getElementById('menuOpen').addEventListener('click', () => {
-    toggleMenu();
+    toggleMenu(1);
 });
 
-document.getElementById('menuClose').addEventListener('click', () => {
-    toggleMenu();
+document.getElementById('menu-overlay').addEventListener('click', () => {
+    toggleMenu(0);
 });
 
 document.getElementById('backHome').addEventListener('click', () => {
