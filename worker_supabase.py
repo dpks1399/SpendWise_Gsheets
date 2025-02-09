@@ -34,7 +34,7 @@ def inr_format(amount):
         formatted_whole = ",".join([rest[i:i+2] for i in range(0, len(rest), 2)])  
         formatted_whole = f"{formatted_whole},{last_three}" if formatted_whole else last_three
     
-    return f"{formatted_whole}.{decimal}" if decimal else formatted_whole
+    return formatted_whole
 
 def convert_to_dict(cols,rows):
     data_dicts = [dict(zip(cols, row)) for row in rows]
