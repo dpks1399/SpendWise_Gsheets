@@ -259,6 +259,7 @@ function editDeleteTransaction(id){
 function populateTransactions(txns){
 
     let records = ''
+    let g_date = ''
     for(let i=0; i<txns.length; i+=1){
         let id = txns[i].ID;
         let source = txns[i].SOURCE //.split(" ").map(word => word[0]).join("").toUpperCase();
@@ -266,7 +267,8 @@ function populateTransactions(txns){
         let category = txns[i].CATEGORY;
         let amount = txns[i].AMOUNT;
         let description = txns[i].DESCRIPTION;
-        let datetime = txns[i].DATETIME;
+        let date = txns[i].DATETIME.split(" | ")[0];
+        let time = txns[i].DATETIME.split(" | ")[1];
         let type = txns[i].TYPE;
         let sign = ''
         let am_val = ''
@@ -281,13 +283,18 @@ function populateTransactions(txns){
             am_val = 'positive'
             t_val = 'income'
         }
+
+        if(g_date != date){
+            records = records + `<h4>${date}</h4>`
+            g_date = date
+        }
         
         let txn_block = ` <div class="expense-card ${t_val}" id="${id}" onclick="editDeleteTransaction(${id})">
                             <div class="icon"><img class="txn-logo" src="static/assets/banklogos/${identifier}.png"></div>
                             <div class="details">
                                 <h3>${category}</h3>
                                 <p>${description}</p>
-                                <p>${datetime}</p>
+                                <p>${source} | ${time}</p>
                             </div>
                             <div class="amount ${am_val}">${sign} &#8377 ${amount}</div>
                         </div>
