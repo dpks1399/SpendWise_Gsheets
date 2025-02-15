@@ -242,18 +242,27 @@ function fetchTransactions(){
     });
 }
 
-function toggleOverlay(val){
-    if(val==1){
-       document.getElementById('overlay').style.display = 'block'; 
-    }
-    else if(val == 0){
-        document.getElementById('overlay').style.display = 'none'; 
-    }
-}
+// function toggleOverlay(val){
+//     if(val==1){
+//        document.getElementById('overlay').style.display = 'block'; 
+//     }
+//     else if(val == 0){
+//         document.getElementById('overlay').style.display = 'none'; 
+//     }
+// }
 
 function editDeleteTransaction(id){
     // alert("edit or delete"+id);
-    toggleOverlay(1);
+    if(id == 0){
+        document.getElementById("editTxnContainer").classList.remove("active");
+        document.getElementById("txn-overlay").style.display = 'none'
+    }
+    else{
+        txn = document.getElementById(id);
+        document.getElementById("edittxnlabel").innerHTML = txn.outerHTML;
+        document.getElementById("txn-overlay").style.display = 'block'
+        document.getElementById("editTxnContainer").classList.add("active");
+    }
 }
 
 function populateTransactions(txns){
@@ -553,6 +562,10 @@ document.getElementById('menuOpen').addEventListener('click', () => {
 
 document.getElementById('menu-overlay').addEventListener('click', () => {
     toggleMenu(0);
+});
+
+document.getElementById('txn-overlay').addEventListener('click', () => {
+    editDeleteTransaction(0);
 });
 
 document.getElementById('backHome').addEventListener('click', () => {

@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="overlay" id="overlay" onclick="toggleOverlay(0)" style="display: none;"></div>
+    <!-- <div class="overlay" id="overlay" onclick="toggleOverlay(0)" style="display: none;"></div> -->
     <div class="app-bar">
       <div class="menu-icon" id="titleIcon">
         <i class="material-icons" id="menuOpen" style="display: block;">menu</i>
@@ -95,6 +95,16 @@
           </div> -->
           <div class="placeholder">Loading...</div>
         </div>
+        <div class="edit-container" id="editTxnContainer">
+          <div class="txn" id="edittxnlabel">
+
+          </div>
+          <div class="buttons">
+            <button>Edit</button>
+            <button>Delete</button>
+          </div>
+        </div>
+        <div class="overlay" id="txn-overlay" style="display: none;"></div>
       </div>
       <div class="screen" id="overview-screen" name="Budgets" style="display: none;">
         <div class="floating-button" id="">
