@@ -1,0 +1,88 @@
+:root {
+    --g1: #F0F4F8; /* Lightest */
+    --g2: #B0BFC6;
+    --g3: #78919C;
+    --g4: #566F7A;
+    --g5: #273239; /* Darkest e5b80b */
+    --g6: #3F3D3D;
+    --a1: #890f1e;
+    --a2: #e5b80b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins";
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 30px;
+}
+
+.login-container img{
+    width: 200px;
+    margin: 40px 0px;
+}
+
+.login-container h2{
+   
+}
+
+.login-form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.login-form label{
+    padding: 0px 10px;
+    margin-top: 20px;
+    color: var(--g5);
+    font-size: 14px;
+    font-weight: 400;
+}
+.login-form input{
+    width: 100%;
+    height: 50px;
+    padding: 10px 20px;
+    margin: 8px 0;
+    border: 1px solid #B0BFC6;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+input{
+    
+}
+
+.btn-login{
+    width: 100%;
+    height: 50px;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    background-color: var(--a1);
+    margin: 20px 0px;
+}
+
+.btn-google{
+
+}

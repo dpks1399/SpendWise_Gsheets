@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template('add_transaction.html')
+    return render_template('login.html')
 
 @app.route('/api/get_categories', methods=['GET'])
 def get_categories():
