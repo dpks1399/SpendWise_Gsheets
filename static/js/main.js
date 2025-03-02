@@ -32,33 +32,7 @@ function fetchRecurring(){
 }
 
 function populateAccOverview(data){
-    console.log(data);
-    // const table = document.getElementById("overviewTable");
-
-    // if (data.length === 0) return;
-
-    // // Extract all keys (headers) from the first object
-    // const keys = ['NAME','INITIAL_BALANCE','TOTAL_INCOME','TOTAL_EXPENSE','CURRENT_BALANCE','TOTAL_DUES','SPARE_AMOUNT']
-
-    // // Create the table rows dynamically
-    // keys.forEach(key => {
-    //     let row = document.createElement("tr");
-
-    //     // First cell (header)
-    //     let th = document.createElement("th");
-    //     th.textContent = key.replace(/_/g, " "); // Format header names
-    //     row.appendChild(th);
-
-    //     // Fill the row with data for each account
-    //     data.forEach(obj => {
-    //         let td = document.createElement("td");
-    //         td.textContent = obj[key]; // Get value dynamically
-    //         row.appendChild(td);
-    //     });
-
-    //     // Append row to the table
-    //     table.appendChild(row);
-    // });
+    // console.log(data);
     let records = ''
     for(let i=0; i<data.length; i+=1){
         let name = data[i].NAME;
