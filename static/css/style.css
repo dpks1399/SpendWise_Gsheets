@@ -674,6 +674,25 @@ body {
     font-size: 16px;
 }
 
+.homeAlertContainer{
+    display: none;
+    width: 100%;
+    background: white;
+    padding: 0px 20px 10px 20px;
+}
+
+.homeAlert {
+    background-color: var(--a2);
+    /* margin: 10px; */
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 10px;
+    border-radius: 10px;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.4);
+}
+
 /* 
 ####################################################################################
 DISPOSABLE - Temporary css for temporary elements. May not be used later 
@@ -724,7 +743,7 @@ th {
     /* width: 100%; */
     /* max-width: 400px; */
     /* margin: 10px; */
-    padding: 0px 20px;
+    padding: 10px 20px 0px 20px;
     overflow: hidden;
     background-color: white;
     border-radius: 10px;
@@ -734,8 +753,8 @@ th {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    gap: 10px;
-    padding: 10px;
+    gap: 15px;
+    /* padding: 10px; */
     scroll-behavior: smooth;
     scrollbar-width: none; /* Hide scrollbar for Firefox */
 }

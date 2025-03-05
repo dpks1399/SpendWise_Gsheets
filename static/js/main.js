@@ -102,7 +102,8 @@ function populateAccOverview(data){
 
 function populateRecurring(txns){
     console.log(txns)
-    let records = ''
+    let records = '';
+    let overdue_flag = 0;
     for(let i=0; i<txns.length; i+=1){
         let pay_day = txns[i].PAY_DAY;
         let day = pay_day.split(' ')[0];
@@ -113,9 +114,11 @@ function populateRecurring(txns){
         let ts = txns[i].PAYMENT_TS;
         let type = '';
         let type_text = txns[i].PAY_STATUS;
+
+        if(type_text == 'Overdue'){ overdue_flag = 1;}
         
         type = (type_text == 'Paid') ? 'paid' : (type_text == 'Overdue') ? 'overdue' : 'unpaid';
-    
+        
         block = `
                 <div class="rec-record ${type}" id="${id}">
                     <div class="date">
@@ -132,6 +135,10 @@ function populateRecurring(txns){
                 </div>
             `
         records = records + block;
+    }
+    console.log("flag" + overdue_flag)
+    if(overdue_flag == 1){
+        document.getElementById("home-alert-container").style.display = 'block';
     }
     document.getElementById('recPayments').innerHTML = records
 }
@@ -545,6 +552,10 @@ document.getElementById('txn-overlay').addEventListener('click', () => {
 document.getElementById('backHome').addEventListener('click', () => {
     showScreen('home-screen');
     selectNav('nav-home');
+});
+
+document.getElementById('close-alert').addEventListener('click', () => {
+    document.getElementById("home-alert-container").style.display = 'none'
 });
 // // document.getElementById('nav-reports').addEventListener('click', () => {
 //     showScreen('reports-screen');

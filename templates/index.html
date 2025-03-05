@@ -67,16 +67,22 @@
     <div class="main-content">
       <div class="screen" id="home-screen" name="Home">
         <div class="homeScreenContent" id="home-screen-content">
+          <div class="homeAlertContainer" id="home-alert-container">
+            <div class="homeAlert">
+              <i class="material-icons">report</i>
+              <span>You have overdue payments!</span>
+              <i class="material-icons" id="close-alert">close</i>
+            </div>
+          </div>
           <div class="slider-container">
             <div class="slider" id="slider">
                 <div class="overview-card overview-placeholder">
                   <span>Loading...</span>
                 </div>
             </div>
-          <div class="dots" id="dots"></div>
+            <div class="dots" id="dots"></div>
+          </div>
         </div>
-        </div>
-        
         <div class="floating-button" id="">
           <button id="addTnxPopBtn" onclick="addTxnPopup(1)">+</button>
         </div>
@@ -175,35 +181,15 @@
       </div>
       <div class="screen" id="add-transaction-screen" name="Add Transaction" style="display: none;">
         <div class="txnContainer" id="addTxnPopup">
-          <!-- <div class="closePopup">
-            <button class="" id="closeTxnPopupBtn" onclick="addTxnPopup(0)"><i class="material-icons">close</i></button>
-          </div>        -->
-          <!-- <div class="heading1">Add Transaction</div> -->
-          <!-- Transaction Type Dropdown -->
           <div class="txn-type-container">
             <button class="selected" id="type-btn-expenditure" name="expenditure" onclick="changeTxnTyp(0)">Expense</button>
             <button id="type-btn-income" name="income" onclick="changeTxnTyp(1)">Income</button>
             <button id="type-btn-transfer" name="transfer"  onclick="changeTxnTyp(2)">Transfer</button>
           </div>
-          <!-- <label for="transaction-type">Transaction Type:</label>
-          <select id="transaction-type-sc01" name="transaction-type">
-            <option value="income">Income</option>
-            <option value="expenditure" selected>Expenditure</option>
-            <option value="transfer">Transfer</option>
-          </select> -->
-
-          <!-- Amount Text Field -->
-          <!-- <h3>Amount:</h3> -->
           <input type="text" id="amount-sc01" name="amount" placeholder="Enter Amount">
           <br>
-
-          <!-- Description Text Field -->
-          <!-- <label for="description">Description:</label> -->
           <input type="text" id="description-sc01" name="description" placeholder="Enter Description">
           <br>
-          
-          <!-- Category Dropdown -->
-          <!-- <label for="category">Category:</label> -->
           <div class="categoryContainer">
             <select id="category-drop-sc01" name="category">
               <option value="">Choose Category</option>
@@ -211,16 +197,10 @@
             <input type="text" id="custom-category-input" name="custom-category" placeholder="Enter Category" style="display: none;">
             <button type="button" id="add-category-btn" onclick="toggleCategoryInput()">Add</button>
           </div>
-
-          <!-- Source Dropdown -->
-          <!-- <label for="source">Source:</label> -->
           <select id="source-drop-sc01" name="source">
             <option value="">Choose Account</option>
           </select>
           <br>
-
-          <!-- DateTime Picker -->
-          <!-- <label for="transaction-datetime">Date and Time:</label> -->
           <input type="datetime-local" id="transaction-datetime-sc01" name="transaction-datetime">
           <button class="submitTxn" onclick="addTxn()">Add Transaction</button>
         </div>
