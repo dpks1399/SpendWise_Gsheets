@@ -1,5 +1,5 @@
 :root {
-    --g1: #F0F4F8; /* Lightest */
+    --g1: #FaFaFa; /* Lightest */
     --g2: #B0BFC6;
     --g3: #78919C;
     --g4: #566F7A;
@@ -539,7 +539,7 @@ body {
     border-radius: 10px;
     padding: 12px;
     min-height: 80px;
-    /* box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.1); */
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.1);
     /* border-left: 5px solid; */
     /* border-bottom: 5px solid; */
 }
@@ -821,7 +821,7 @@ th {
 .overview-card {
     flex: 0 0 100%; 
     max-width: 100%;
-    aspect-ratio: 1.585;
+    aspect-ratio: 2;
     background: linear-gradient(135deg, #890f1e, #b31224, #890f1e);
     /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); */
     color: white;
