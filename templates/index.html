@@ -181,27 +181,47 @@
       </div>
       <div class="screen" id="add-transaction-screen" name="Add Transaction" style="display: none;">
         <div class="txnContainer" id="addTxnPopup">
-          <div class="txn-type-container">
+          <div class="txn-type-container ">
             <button class="selected" id="type-btn-expenditure" name="expenditure" onclick="changeTxnTyp(0)">Expense</button>
             <button id="type-btn-income" name="income" onclick="changeTxnTyp(1)">Income</button>
             <button id="type-btn-transfer" name="transfer"  onclick="changeTxnTyp(2)">Transfer</button>
           </div>
-          <input type="text" id="amount-sc01" name="amount" placeholder="Enter Amount">
-          <br>
-          <input type="text" id="description-sc01" name="description" placeholder="Enter Description">
-          <br>
-          <div class="categoryContainer">
+          <div class="amount-div-sc01">
+            <!-- <span>&#8377</span> -->
+            <i class="material-icons">currency_rupee</i>
+            <input type="number" id="amount-sc01" name="amount" placeholder="Enter Amount">
+            <i class="material-icons">calculate</i>
+          </div>
+          <div class="amount-div-sc01">
+            <i class="material-icons">category</i>
             <select id="category-drop-sc01" name="category">
               <option value="">Choose Category</option>
             </select>
-            <input type="text" id="custom-category-input" name="custom-category" placeholder="Enter Category" style="display: none;">
-            <button type="button" id="add-category-btn" onclick="toggleCategoryInput()">Add</button>
+            <input type="text" id="custom-category-input" name="custom-category" placeholder="Enter New Category" style="display: none;">
+            <button type="button" id="add-category-btn" onclick="toggleCategoryInput()"><i class="material-icons">playlist_add</i></button>
           </div>
-          <select id="source-drop-sc01" name="source">
-            <option value="">Choose Account</option>
-          </select>
-          <br>
-          <input type="datetime-local" id="transaction-datetime-sc01" name="transaction-datetime">
+          <div class="amount-div-sc01">
+            <i class="material-icons">account_balance</i>
+            <select id="source-drop-sc01" name="source">
+              <option value="">Choose Account</option>
+            </select>
+          </div>
+          <div class="amount-div-sc01">
+            <i class="material-icons">notes</i>
+            <input type="text" id="description-sc01" name="description" placeholder="Enter Description">
+          </div>
+          <div class="date-time-container">
+            <div class="item" id="dateDiv">
+              <i class="material-icons">calendar_month</i>
+              <span>dd/mm/yyyy</span>
+              <input type="date" id="transaction-date-sc01" name="transaction-date" style="display: none;">
+            </div>
+            <div class="item" id="timeDiv">
+              <i class="material-icons">schedule</i>
+              <span>HH:MM</span>
+              <input type="time" id="transaction-time-sc01" name="transaction-time" style="display: none;">
+            </div>
+          </div>
           <button class="submitTxn" onclick="addTxn()">Add Transaction</button>
         </div>
       </div>

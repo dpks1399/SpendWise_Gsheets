@@ -326,12 +326,12 @@ function toggleCategoryInput() {
     if (customCategoryInput.style.display === 'none') {
         customCategoryInput.style.display = 'block';
         categoryDropdown.style.display = 'none';
-        addButton.textContent = 'Cancel';
+        addButton.innerHTML = '<i class="material-icons">close</i>';
         categoryDropdown.value = '';
     } else {
         customCategoryInput.style.display = 'none';
         categoryDropdown.style.display = 'block';
-        addButton.textContent = 'Add';
+        addButton.innerHTML = '<i class="material-icons">playlist_add</i>';
         customCategoryInput.value = '';
     }
 }
@@ -556,6 +556,13 @@ document.getElementById('backHome').addEventListener('click', () => {
 
 document.getElementById('close-alert').addEventListener('click', () => {
     document.getElementById("home-alert-container").style.display = 'none'
+});
+
+document.getElementById('dateDiv').addEventListener('click', () => {
+    document.getElementById("transaction-date-sc01").showPicker()
+});
+document.getElementById('timeDiv').addEventListener('click', () => {
+    document.getElementById("transaction-time-sc01").showPicker()
 });
 // // document.getElementById('nav-reports').addEventListener('click', () => {
 //     showScreen('reports-screen');

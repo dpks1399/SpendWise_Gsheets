@@ -151,7 +151,7 @@ body {
 }
 
 .txnContainer {
-    background: white;
+    background: #fafafa;
     padding: 20px;
     /* border-radius: 8px; */
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
@@ -160,29 +160,36 @@ body {
 }
 
 .txn-type-container{
+    background: #ebebeb;
+    height: 40px;
     display: flex;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
+    border-radius: 10px;
     margin-bottom: 20px;
+    justify-content: space-around;
+    align-items: center;
 }
 .txn-type-container button{
-    height: 50px;
-    width: 100px;
-    border-radius: 15px;
-    border: 1px solid var(--g4);
-    background-color: var(--g1);
-    color: var(--g4);
-    font-size: 16px;
+    height: 40px;
+    flex: 1;
+    border-radius: 10px;
+    border: none;
+    background-color: #ebebeb;
+    /* color: var(--g4); */
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .txn-type-container .selected{
-    /* height: 40px; */
+    height: 40px; 
     width: 100px;
     /* border-radius: 20px; */
-    border: 2px solid var(--a2);
-    background-color: var(--a2);
-    color: white;
-    font-weight: 800;
+    /* border: 2px solid #ebebeb; */
+    background-color: white;
+    /* color: white; */
+    font-weight: 400;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
 }
 
 .txnContainer label {
@@ -193,28 +200,75 @@ body {
 
 .txnContainer select {
     width: 100%;
-    height: 50px;
+    height: 40px;
     padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid var(--g3);
-    border-radius: 15px;
-    background-color: var(--g1);
+    /* margin-bottom: 15px; */
+    /* border-radius: 15px; */
+    border: none;
+    border-bottom: 1px solid var(--g2);
+    background-color: #fafafa;
     color: var(--g4);
     font-size: 16px;
 }
 
-.txnContainer input[type="text"],
-.txnContainer input[type="datetime-local"] {
+.txnContainer i {
+    color: var(--g4);
+    /* font-size: 16px; */
+}
+
+.amount-div-sc01{
     width: 100%;
-    height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 30px 0px;
+}
+
+.amount-div-sc01 input{
+    width: 100%;
+    height: 40px;
     padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid var(--g3);
-    border-radius: 15px;
-    background-color: var(--g1);
+    /* margin-bottom: 15px; */
+    border: none;
+    /* border-radius: 15px; */
+    background-color: #fafafa;
     color: var(--g4);
     font-size: 16px;
+    border-bottom: 1px solid var(--g2);
 }
+
+.amount-div-sc01 button{
+    border: none;
+    background-color: #fafafa;
+}
+
+.date-time-container{
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+.date-time-container .item{
+    display: flex;
+    align-items: center;
+    color: var(--g4);
+    gap: 15px;
+    flex: 1;
+}
+
+.date-time-container .item input{
+    border: none;
+    background: #fafafa;
+    font-size: 14px;
+}
+
+/* .date-time-container .item input::-webkit-calendar-picker-indicator{
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+} */
 
 /* .txnContainer button {
     display: inline-block;
@@ -231,11 +285,11 @@ body {
     height: 50px;
     background-color: var(--a1);
     border: none;
-    border-radius: 15px;
+    border-radius: 10px;
     color: white;
     font-size: 18px;
     font-weight: 600;
-    margin-top: 15px;
+    margin-top: 50px;
 }
 
 .closePopup{
