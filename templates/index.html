@@ -6,10 +6,12 @@
     <title>SpendWise</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calc.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   </head>
   <body>
     <!-- <div class="overlay" id="overlay" onclick="toggleOverlay(0)" style="display: none;"></div> -->
@@ -190,7 +192,8 @@
             <!-- <span>&#8377</span> -->
             <i class="material-icons">currency_rupee</i>
             <input type="number" id="amount-sc01" name="amount" placeholder="Enter Amount">
-            <i class="material-icons">calculate</i>
+            <!-- <i class="material-icons">calculate</i> -->
+            <i class="fa-solid fa-calculator" id="calculatorIcon"></i>
           </div>
           <div class="amount-div-sc01">
             <i class="material-icons">category</i>
@@ -213,17 +216,19 @@
           <div class="date-time-container">
             <div class="item" id="dateDiv">
               <i class="material-icons">calendar_month</i>
-              <span>dd/mm/yyyy</span>
+              <span id="transactionDateSpan-sc01">dd/mm/yyyy</span>
               <input type="date" id="transaction-date-sc01" name="transaction-date" style="display: none;">
             </div>
             <div class="item" id="timeDiv">
               <i class="material-icons">schedule</i>
-              <span>HH:MM</span>
+              <span id="transactionTimeSpan-sc01">HH:MM</span>
               <input type="time" id="transaction-time-sc01" name="transaction-time" style="display: none;">
             </div>
           </div>
           <button class="submitTxn" onclick="addTxn()">Add Transaction</button>
         </div>
+      </div>
+      <div class="screen" id="calculator-screen" name="Calculator" style="display: none;">
       </div>
     </div>
 
@@ -235,6 +240,33 @@
       <!-- <div class="nav-item" id="nav-reports"><i class="material-icons">equalizer</i><span>Reports</span></div> -->
     </div>
 
+    <div class="sc-calc-calculator" id="calcPopup" style="display: none;">
+      <input type="text" id="sc-calc-display" disabled>
+      <div class="sc-calc-buttons">
+          <button onclick="scCalcClearDisplay()">AC</button>
+          <button onclick="scCalcAppendValue('%')">%</button>
+          <button onclick="scCalcBackspace()">⌫</button>
+          <button class="sc-calc-operator" onclick="scCalcAppendValue('/')">÷</button>
+          <button onclick="scCalcAppendValue('7')">7</button>
+          <button onclick="scCalcAppendValue('8')">8</button>
+          <button onclick="scCalcAppendValue('9')">9</button>
+          <button class="sc-calc-operator" onclick="scCalcAppendValue('*')">×</button>
+          <button onclick="scCalcAppendValue('4')">4</button>
+          <button onclick="scCalcAppendValue('5')">5</button>
+          <button onclick="scCalcAppendValue('6')">6</button>
+          <button class="sc-calc-operator" onclick="scCalcAppendValue('-')">-</button>
+          <button onclick="scCalcAppendValue('1')">1</button>
+          <button onclick="scCalcAppendValue('2')">2</button>
+          <button onclick="scCalcAppendValue('3')">3</button>
+          <button class="sc-calc-operator" onclick="scCalcAppendValue('+')">+</button>
+          <button class="sc-calc-equal" style="font-size: 1.2em;" onclick="scCalcLogFinalValue()">Done</button>
+          <button onclick="scCalcAppendValue('0')">0</button>
+          <button onclick="scCalcAppendValue('.')">.</button>
+          <button class="sc-calc-equal" onclick="scCalcCalculate()">=</button>
+      </div>
+    </div>
+
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/calc.js') }}"></script>
   </body>
 </html>

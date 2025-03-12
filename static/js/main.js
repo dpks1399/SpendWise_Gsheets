@@ -6,8 +6,20 @@ document.addEventListener("DOMContentLoaded", function() {
     fetchTransactions();
     fetchRecurring();
     showScreen('home-screen');  // Show the Add Transaction screen by default
+    updateCurrentDateTimeInAddTransaction();
     // addTxnPopup(1);
 });
+
+function updateCurrentDateTimeInAddTransaction(){
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    document.getElementById("transactionDateSpan-sc01").textContent = `${year}-${month}-${day}`;
+    document.getElementById("transactionTimeSpan-sc01").textContent = `${hours}:${minutes}`;
+}
 
 function fetchOverview(){
     fetch('/api/get_acc_overview')
@@ -171,21 +183,28 @@ function sendInsertTxnData(data) {
 }
 
 // Your original function to format the datetime
-function getformattedDatetime(val) {
-    if (!val) {
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const hours = String(currentDate.getHours()).padStart(2, '0');
-        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-        const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+function getformattedDatetime(dval, tval) {
 
-        const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:00`;
-        return formattedDateTime;
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    // const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+    let formattedDate = '';
+    let formattedTime = ''
+    if (!dval) {
+        formattedDate = `${year}-${month}-${day}`;
     } else {
-        return val.replace('T', ' ') + ':00';
+        formattedDate = dval;
     }
+    if (!tval) {
+        formattedTime = `${hours}:${minutes}:00`;
+    } else {
+        formattedDate = `${tval}:00`;
+    }
+    return `${formattedDate} ${formattedTime}`
 }
 
 // Fetch sources for the dropdown
@@ -362,7 +381,7 @@ function addTxn() {
     var category = '-1';
     var cust_category='-1';
     var source = document.getElementById("source-drop-sc01").value;
-    var dateTime = getformattedDatetime(document.getElementById("transaction-datetime-sc01").value);
+    var dateTime = getformattedDatetime(document.getElementById("transactionDateSpan-sc01").value, document.getElementById("transactionTimeSpan-sc01").value);
 
     if (!document.getElementById("custom-category-input").value) {
         category = document.getElementById("category-drop-sc01").value;
@@ -419,7 +438,8 @@ function resetTxn() {
     document.getElementById("custom-category-input").value = '';
     document.getElementById("category-drop-sc01").value = '';
     document.getElementById("source-drop-sc01").value = '';
-    document.getElementById("transaction-datetime-sc01").value = '';
+    updateCurrentDateTimeInAddTransaction();
+    
 }
 
 // Handle screen switching for bottom nav bar
@@ -537,6 +557,11 @@ document.getElementById('nav-recurring').addEventListener('click', () => {
     selectNav('nav-recurring');
 });
 
+document.getElementById('calculatorIcon').addEventListener('click', () => {
+    document.getElementById("calcPopup").style.display= 'flex';
+    // selectNav('nav-recurring');
+});
+
 document.getElementById('menuOpen').addEventListener('click', () => {
     toggleMenu(1);
 });
@@ -564,6 +589,9 @@ document.getElementById('dateDiv').addEventListener('click', () => {
 document.getElementById('timeDiv').addEventListener('click', () => {
     document.getElementById("transaction-time-sc01").showPicker()
 });
-// // document.getElementById('nav-reports').addEventListener('click', () => {
-//     showScreen('reports-screen');
-// });
+document.getElementById('transaction-time-sc01').addEventListener('change', () => {
+    document.getElementById("transactionTimeSpan-sc01").textContent = document.getElementById('transaction-time-sc01').value;
+});
+document.getElementById('transaction-date-sc01').addEventListener('change', () => {
+    document.getElementById("transactionDateSpan-sc01").textContent = document.getElementById('transaction-date-sc01').value;
+});

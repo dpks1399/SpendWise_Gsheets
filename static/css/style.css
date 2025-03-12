@@ -213,6 +213,7 @@ body {
 
 .txnContainer i {
     color: var(--g4);
+    font-size: 24px;
     /* font-size: 16px; */
 }
 
