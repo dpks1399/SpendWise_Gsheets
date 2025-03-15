@@ -88,7 +88,7 @@ function populateMonthOverview(data){
             responsive: true,
             plugins: {
                 legend: {
-                    position: "bottom" // Moves legend to bottom
+                    display: false // Moves legend to bottom
                 }
             }
         }
