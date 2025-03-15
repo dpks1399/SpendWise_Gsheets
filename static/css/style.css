@@ -748,6 +748,39 @@ body {
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.4);
 }
 
+.home-today-container{
+    margin: 20px;
+}
+
+.home-today-container .values{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    justify-content: space-between;
+    padding: 10px 0px;
+}
+
+.home-today-container .spent,
+.home-today-container .gained {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* .home-today-container .spent{
+    background-color: #f8d7da;
+    color: #721c24;
+}
+.home-today-container .gained {
+    background-color: #d4edda;
+    color: #155724;
+} */
+
 /* 
 ####################################################################################
 DISPOSABLE - Temporary css for temporary elements. May not be used later 

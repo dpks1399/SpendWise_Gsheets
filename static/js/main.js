@@ -22,13 +22,22 @@ function updateCurrentDateTimeInAddTransaction(){
 }
 
 function fetchOverview(){
+    fetch('/api/get_month_overview')
+    .then(response => response.json())
+    .then(stats => {
+        populateMonthOverview(stats);
+    })
+    .catch(error => {
+        console.error('Error fetching month overview:', error);
+    });
+
     fetch('/api/get_acc_overview')
     .then(response => response.json())
     .then(stats => {
         populateAccOverview(stats);
     })
     .catch(error => {
-        console.error('Error fetching sources:', error);
+        console.error('Error fetching acc overview:', error);
     });
 }
 
@@ -40,6 +49,49 @@ function fetchRecurring(){
     })
     .catch(error => {
         console.error('Error fetching sources:', error);
+    });
+}
+
+function populateMonthOverview(data){
+    console.log(data);
+    document.getElementById('todaySpent').textContent = data["DAY_SPENT"];
+    document.getElementById('todayGained').textContent = data["DAY_GAINED"];
+    document.getElementById('monthSpent').textContent = data["MONTH_SPENT"];
+    document.getElementById('monthGained').textContent = data["MONTH_GAINED"];
+    document.getElementById('monthDailyAvgSpent').textContent = data["MONTH_AVG_DAILY_SPEND"];
+
+    let cats = [];
+    let amnt = [];
+    for (let i=0; i<data["CAT_SPEND"].length;i+=1){
+        // console.log(data.)
+        cats.push(data["CAT_SPEND"][i]["CATEGORY_NAME"])
+        amnt.push(data["CAT_SPEND"][i]["TOTAL_SPENT"])
+    }
+
+    console.log(cats);
+    console.log(amnt);
+    const ctx = document.getElementById("monthCatChart").getContext("2d");
+
+    new Chart(ctx, {
+        type: "doughnut", // Doughnut chart type
+        data: {
+            labels: cats,
+            datasets: [{
+                label: '',
+                data: amnt, // Data values
+                backgroundColor: ["red", "yellow", "pink", "brown", "purple"],
+                borderColor: "white",
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "bottom" // Moves legend to bottom
+                }
+            }
+        }
     });
 }
 

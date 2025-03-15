@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <!-- <div class="overlay" id="overlay" onclick="toggleOverlay(0)" style="display: none;"></div> -->
@@ -83,6 +84,30 @@
                 </div>
             </div>
             <div class="dots" id="dots"></div>
+          </div>
+          <div class="home-today-container">
+            <!-- <span>Today</span> -->
+            <div class="values">
+              <div class="spent">
+                <span>Spent Today</span>
+                <span id="todaySpent">3400</span>
+              </div>
+              <div class="gained">
+                <span>Gained Today</span>
+                <span id="todayGained">300</span>
+              </div>
+            </div>
+          </div>
+          <div class="home-mtd-container">
+            <span>Month Till Date</span>
+            <span>Total Spent</span>
+            <span id="monthSpent">3400</span>
+            <span>Total Gained</span>
+            <span id="monthGained">3400</span>
+            <span>Daily Avg. Spend</span>
+            <span id="monthDailyAvgSpent">3400</span>
+            <span>Categorical Spend</span>
+            <canvas id="monthCatChart"></canvas>
           </div>
         </div>
         <div class="floating-button" id="">

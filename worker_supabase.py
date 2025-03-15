@@ -295,6 +295,69 @@ class Supabase():
             item['TOTAL_INCOME'] = self.inr_format(item['TOTAL_INCOME'])
 
         return(combined_list)
+
+    def fetchThisDayMonthOverview(self):
+        day_query = f'''
+                        SELECT  
+                            COALESCE(SUM(CASE WHEN t.type = 'expenditure' THEN t.amount END), 0) AS day_spent,  
+                            COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount END), 0) AS day_gained 
+                        FROM sw_gusr_001.transactions_master t left join sw_gusr_001.categories c on t.category = c.id
+                        WHERE c.type = 0 AND DATE_TRUNC('day', t.datetime) = DATE_TRUNC('day', CURRENT_DATE);
+                    '''
+        stat_query = f'''
+                        SELECT  
+                            COALESCE(SUM(CASE WHEN t.type = 'expenditure' THEN t.amount END), 0) AS month_spent,  
+                            COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount END), 0) AS month_gained,  
+                            (COALESCE(SUM(CASE WHEN t.type = 'expenditure' THEN t.amount END), 0) /  
+                            NULLIF(COUNT(DISTINCT DATE(t.datetime)), 0)) AS month_avg_daily_spend  
+                        FROM sw_gusr_001.transactions_master t left join sw_gusr_001.categories c on t.category = c.id
+                        WHERE c.type = 0 AND DATE_TRUNC('month', t.datetime) = DATE_TRUNC('month', CURRENT_DATE);
+                    '''
+        cat_query = f'''
+                        SELECT  
+                            c.id AS category_id,  
+                            c.category AS category_name,  
+                            COALESCE(SUM(t.amount), 0) AS total_spent  
+                        FROM sw_gusr_001.transactions_master t  
+                        JOIN sw_gusr_001.categories c ON t.category = c.id  
+                        WHERE c.type = 0  
+                        AND t.type = 'expenditure'  
+                        AND DATE_TRUNC('month', t.datetime) = DATE_TRUNC('month', CURRENT_DATE)  
+                        GROUP BY c.id, c.category  
+                        ORDER BY total_spent DESC;
+                    '''
+        conn = self.get_db_connection()
+        if conn:
+            try:
+                cursor = conn.cursor()
+                cursor.execute(day_query)
+                header = [desc[0].upper() for desc in cursor.description]  # Get column names
+                result = cursor.fetchall()
+                day_stats =  self.convert_to_dict(header, result)
+                cursor.execute(stat_query)
+                header = [desc[0].upper() for desc in cursor.description]  # Get column names
+                result = cursor.fetchall()
+                month_stats =  self.convert_to_dict(header, result)
+                cursor.execute(cat_query)
+                header = [desc[0].upper() for desc in cursor.description]  # Get column names
+                result = cursor.fetchall()
+                cat_stats =  self.convert_to_dict(header, result)
+                cursor.close()
+                res = {
+                    "DAY_SPENT": day_stats[0]["DAY_SPENT"],
+                    "DAY_GAINED": day_stats[0]["DAY_GAINED"],
+                    "MONTH_SPENT": month_stats[0]["MONTH_SPENT"],
+                    "MONTH_GAINED": month_stats[0]["MONTH_GAINED"],
+                    "MONTH_AVG_DAILY_SPEND": month_stats[0]["MONTH_AVG_DAILY_SPEND"],
+                    "CAT_SPEND": cat_stats
+                }
+                return res
+            except psycopg2.Error as e:
+                print(f"Error fetching query: {e}")
+                return None
+            finally:
+                conn.close()
+
  
     def signUp(self,name,email,hashed_password):
         query = '''insert into sw_global.users (identifier,name,email,password) values (%s,%s,%s,%s) returning id'''
@@ -391,7 +454,7 @@ def test():
     # print(insertTxn(data_obj))
     # # print(getTransactions())
     sb = Supabase()
-    print(sb.runMonthCheck())
+    print(sb.fetchThisDayMonthOverview())
     
 
 if __name__ == '__main__':
