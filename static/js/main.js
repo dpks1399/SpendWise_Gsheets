@@ -62,35 +62,69 @@ function populateMonthOverview(data){
 
     let cats = [];
     let amnt = [];
+    let percentage = [];
     for (let i=0; i<data["CAT_SPEND"].length;i+=1){
         // console.log(data.)
         cats.push(data["CAT_SPEND"][i]["CATEGORY_NAME"])
         amnt.push(data["CAT_SPEND"][i]["TOTAL_SPENT"])
     }
+    const total = amnt.reduce((sum, num) => sum + num, 0);
+    percentage = total === 0 ? arr.map(() => 0) : amnt.map(num => (num / total * 100).toFixed(1));
 
-    console.log(cats);
-    console.log(amnt);
     const ctx = document.getElementById("monthCatChart").getContext("2d");
 
+    let li = ''
+    for(let i=0; i<cats.length;i+=1){
+        li = li + `<li>${cats[i]}: <span>${amnt[i]}</span></li>`
+    }
+    document.querySelector('.home-mtd-container .chart .values ul').innerHTML = li;
+
+    Chart.register(ChartDataLabels);
     new Chart(ctx, {
-        type: "doughnut", // Doughnut chart type
+        type: "bar", // Doughnut chart type
         data: {
             labels: cats,
             datasets: [{
-                label: '',
-                data: amnt, // Data values
-                backgroundColor: ["red", "yellow", "pink", "brown", "purple"],
+                data: percentage, // Data values
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(255, 159, 64, 0.6)',
+                    'rgba(255, 205, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(201, 203, 207, 0.6)'
+                  ],
                 borderColor: "white",
-                borderWidth: 2
+                borderWidth: 2,
+                borderRadius: 50,
             }]
         },
         options: {
+            indexAxis:'y',
             responsive: true,
-            plugins: {
-                legend: {
-                    display: false // Moves legend to bottom
+            scales: {
+                x: {
+                    min: 0,
+                    max: Math.max(...percentage) * 1.25,
+                    ticks: { display: false },
+                    grid: { display: false }
+                },
+                y: {
+                    ticks: { display: false },
+                    grid: { display: false }
                 }
-            }
+            },
+            plugins: {
+                legend: { display: false },
+                datalabels: {
+                    anchor: "end", // Position at the end of the bar
+                    align: "end",  // Move label outside the bar (to the right)
+                    color: "black",
+                    font: { weight: 200, size: 12 },
+                    formatter: (value) => value + "%"
+                }
+            },
         }
     });
 }

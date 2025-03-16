@@ -749,7 +749,8 @@ body {
 }
 
 .home-today-container,
-.home-mtd-container{
+.home-mtd-container,
+.home-mtd-stats-container{
     margin: 10px;
     padding: 10px 20px;
     background-color: white;
@@ -787,11 +788,13 @@ body {
 }
 
 #monthCatChart{
-    width: 200px !important;
+    /* width: 200px !important; */
     height: 200px !important;
 }
 .home-mtd-container .chart{
     display: flex;
+    flex-direction: column;
+    width: 100%;
     align-items: center;
     justify-content: space-between;
 }
