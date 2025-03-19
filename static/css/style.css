@@ -576,13 +576,15 @@ body {
 
 .details h3 {
     font-size: 16px;
+    font-weight: 400;
     color: #333;
     margin-bottom: 4px;
 }
 
 .details p {
     font-size: 14px;
-    color: #777;
+    font-weight: 300;
+    color: #333;
 }
 
 .amount {
