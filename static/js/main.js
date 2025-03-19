@@ -52,13 +52,44 @@ function fetchRecurring(){
     });
 }
 
+function getColors(val){
+    let opa = 0.6;
+    let res = [];
+    const Colors = [
+        `rgba(255, 87, 51, ${opa})`,   // Red-Orange
+        `rgba(51, 255, 87, ${opa})`,   // Green
+        `rgba(51, 87, 255, ${opa})`,   // Blue
+        `rgba(255, 51, 166, ${opa})`,  // Pink
+        `rgba(166, 51, 255, ${opa})`,  // Purple
+        `rgba(51, 255, 245, ${opa})`,  // Cyan
+        `rgba(255, 195, 0, ${opa})`,   // Yellow
+        `rgba(199, 0, 57, ${opa})`,    // Dark Red
+        `rgba(144, 12, 63, ${opa})`,   // Deep Maroon
+        `rgba(88, 24, 69, ${opa})`,    // Dark Purple
+        `rgba(26, 188, 156, ${opa})`,  // Teal
+        `rgba(46, 204, 113, ${opa})`,  // Green 2
+        `rgba(52, 152, 219, ${opa})`,  // Sky Blue
+        `rgba(155, 89, 182, ${opa})`,  // Lavender
+        `rgba(230, 126, 34, ${opa})`,  // Orange
+        `rgba(241, 196, 15, ${opa})`,  // Bright Yellow
+        `rgba(231, 76, 60, ${opa})`,   // Red
+        `rgba(149, 165, 166, ${opa})`, // Grey
+        `rgba(52, 73, 94, ${opa})`,    // Dark Blue
+        `rgba(127, 140, 141, ${opa})`  // Soft Grey
+    ];
+    for(let i=0; i<val; i+=1){
+        res.push(Colors[i%Colors.length]);  
+    }
+    return res;
+}
+
 function populateMonthOverview(data){
     console.log(data);
-    document.getElementById('todaySpent').textContent = data["DAY_SPENT"];
-    document.getElementById('todayGained').textContent = data["DAY_GAINED"];
-    document.getElementById('monthSpent').textContent = data["MONTH_SPENT"];
-    document.getElementById('monthGained').textContent = data["MONTH_GAINED"];
-    document.getElementById('monthDailyAvgSpent').textContent = data["MONTH_AVG_DAILY_SPEND"];
+    document.getElementById('todaySpent').innerHTML = `&#8377 ${data["DAY_SPENT"]}`;
+    document.getElementById('todayGained').innerHTML = `&#8377 ${data["DAY_GAINED"]}`;
+    document.getElementById('monthSpent').innerHTML = `&#8377 ${data["MONTH_SPENT"]}`;
+    document.getElementById('monthGained').innerHTML = `&#8377 ${data["MONTH_GAINED"]}`;
+    document.getElementById('monthDailyAvgSpent').innerHTML = `&#8377 ${data["MONTH_AVG_DAILY_SPEND"]}`;
 
     let cats = [];
     let amnt = [];
@@ -71,33 +102,28 @@ function populateMonthOverview(data){
     const total = amnt.reduce((sum, num) => sum + num, 0);
     percentage = total === 0 ? arr.map(() => 0) : amnt.map(num => (num / total * 100).toFixed(1));
 
-    const ctx = document.getElementById("monthCatChart").getContext("2d");
+    const ctxb = document.getElementById("monthCatChart").getContext("2d");
+    const ctxl = document.getElementById("monthDailyChart").getContext("2d");
 
+    let colors = getColors(cats.length)
     let li = ''
     for(let i=0; i<cats.length;i+=1){
-        li = li + `<li>${cats[i]}: <span>${amnt[i]}</span></li>`
+        li = li + `<li><div style="background-color: ${colors[i]}"></div><div><span>${cats[i]}</span><span>&#8377 ${amnt[i]}</span></div></li>`
     }
+    li = li + `<hr><li><div style="background-color: white"></div><div><span>Total</span><span>&#8377 ${data["MONTH_SPENT"]}</span></div></li>`
     document.querySelector('.home-mtd-container .chart .values ul').innerHTML = li;
 
     Chart.register(ChartDataLabels);
-    new Chart(ctx, {
+    new Chart(ctxb, {
         type: "bar", // Doughnut chart type
         data: {
             labels: cats,
             datasets: [{
                 data: percentage, // Data values
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(255, 159, 64, 0.6)',
-                    'rgba(255, 205, 86, 0.6)',
-                    'rgba(75, 192, 192, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(153, 102, 255, 0.6)',
-                    'rgba(201, 203, 207, 0.6)'
-                  ],
+                backgroundColor: colors,
                 borderColor: "white",
                 borderWidth: 2,
-                borderRadius: 50,
+                borderRadius: 0,
             }]
         },
         options: {
@@ -108,7 +134,7 @@ function populateMonthOverview(data){
                     min: 0,
                     max: Math.max(...percentage) * 1.25,
                     ticks: { display: false },
-                    grid: { display: false }
+                    grid: { display: true }
                 },
                 y: {
                     ticks: { display: false },
@@ -125,6 +151,52 @@ function populateMonthOverview(data){
                     formatter: (value) => value + "%"
                 }
             },
+        }
+    });
+
+    let dailySpend = []
+    for (let i=0; i<data["DAILY_SPEND"].length;i+=1){
+        // console.log(data.)
+        dailySpend.push(data["DAILY_SPEND"][i]["AMOUNT"])
+    }
+    new Chart(ctxl, {
+        type: 'line',
+        data: {
+            labels: Array.from({ length: 31 }, (_, i) => `${i + 1}`), // X-axis (Dates of the month)
+            datasets: [{
+                label: '',
+                data: dailySpend,
+                borderColor: 'rgba(52, 152, 219, 1)', // Blue Line
+                backgroundColor: 'rgba(52, 152, 219, 0.2)', // Light Fill
+                borderWidth: 1,
+                pointBackgroundColor: 'rgba(52, 152, 219, 1)', // Red Points
+                pointRadius: 1,
+                pointHoverRadius: 7,
+                fill: false, // Fill under the line
+                tension: 0 // Smooth curves
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: { display: false, text: 'Day of the Month' },
+                    grid: { display: false },
+                    ticks:{font: {size: 10}}
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {display: false},
+                    title: { display: false, text: 'Sales ($)' },
+                    grid: { color: 'rgba(0, 0, 0, 0.1)' }
+                }
+            },
+            plugins: {
+                legend: { display: false, position: 'top' },
+                tooltip: { enabled: true },
+                datalabels: {display: false}
+            }
         }
     });
 }

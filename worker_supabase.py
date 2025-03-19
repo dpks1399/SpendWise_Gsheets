@@ -23,7 +23,10 @@ class Supabase():
             
     def inr_format(self,amount):
         amount = str(amount)
-        
+        sign = ''
+        if(amount[0]=='-'):
+            sign = '-'
+            amount = amount[1:]
         if "." in amount:
             whole, decimal = amount.split(".")  # Split whole and decimal parts
         else:
@@ -37,7 +40,7 @@ class Supabase():
             
             # Group in 2s from the end
             formatted_whole = ",".join([rest[i:i+2] for i in range(0, len(rest), 2)])  
-            formatted_whole = f"{formatted_whole},{last_three}" if formatted_whole else last_three
+            formatted_whole = f"{sign}{formatted_whole},{last_three}" if formatted_whole else last_three
         
         return formatted_whole
 
@@ -301,7 +304,7 @@ class Supabase():
                         SELECT  
                             COALESCE(SUM(CASE WHEN t.type = 'expenditure' THEN t.amount END), 0) AS day_spent,  
                             COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount END), 0) AS day_gained 
-                        FROM sw_gusr_001.transactions_master t left join sw_gusr_001.categories c on t.category = c.id
+                        FROM {self.SCHEMA}.transactions_master t left join {self.SCHEMA}.categories c on t.category = c.id
                         WHERE c.type = 0 AND DATE_TRUNC('day', t.datetime) = DATE_TRUNC('day', CURRENT_DATE);
                     '''
         stat_query = f'''
@@ -310,7 +313,7 @@ class Supabase():
                             COALESCE(SUM(CASE WHEN t.type = 'income' THEN t.amount END), 0) AS month_gained,  
                             (COALESCE(SUM(CASE WHEN t.type = 'expenditure' THEN t.amount END), 0) /  
                             NULLIF(COUNT(DISTINCT DATE(t.datetime)), 0)) AS month_avg_daily_spend  
-                        FROM sw_gusr_001.transactions_master t left join sw_gusr_001.categories c on t.category = c.id
+                        FROM {self.SCHEMA}.transactions_master t left join {self.SCHEMA}.categories c on t.category = c.id
                         WHERE c.type = 0 AND DATE_TRUNC('month', t.datetime) = DATE_TRUNC('month', CURRENT_DATE);
                     '''
         cat_query = f'''
@@ -318,13 +321,21 @@ class Supabase():
                             c.id AS category_id,  
                             c.category AS category_name,  
                             COALESCE(SUM(t.amount), 0) AS total_spent  
-                        FROM sw_gusr_001.transactions_master t  
-                        JOIN sw_gusr_001.categories c ON t.category = c.id  
+                        FROM {self.SCHEMA}.transactions_master t  
+                        JOIN {self.SCHEMA}.categories c ON t.category = c.id  
                         WHERE c.type = 0  
                         AND t.type = 'expenditure'  
                         AND DATE_TRUNC('month', t.datetime) = DATE_TRUNC('month', CURRENT_DATE)  
                         GROUP BY c.id, c.category  
                         ORDER BY total_spent DESC;
+                    '''
+        daily_query = f'''
+                        SELECT  
+                            COALESCE(SUM(CASE WHEN t.type = 'expenditure' THEN t.amount END), 0) AS amount,
+                            EXTRACT(DAY FROM t.datetime) AS day
+                        FROM {self.SCHEMA}.transactions_master t left join {self.SCHEMA}.categories c on t.category = c.id
+                        WHERE c.type = 0 AND DATE_TRUNC('month', t.datetime) = DATE_TRUNC('month', CURRENT_DATE)
+                        GROUP BY EXTRACT(DAY FROM t.datetime);
                     '''
         conn = self.get_db_connection()
         if conn:
@@ -342,6 +353,10 @@ class Supabase():
                 header = [desc[0].upper() for desc in cursor.description]  # Get column names
                 result = cursor.fetchall()
                 cat_stats =  self.convert_to_dict(header, result)
+                cursor.execute(daily_query)
+                header = [desc[0].upper() for desc in cursor.description]  # Get column names
+                result = cursor.fetchall()
+                daily_stats =  self.convert_to_dict(header, result)
                 cursor.close()
                 res = {
                     "DAY_SPENT": day_stats[0]["DAY_SPENT"],
@@ -349,7 +364,8 @@ class Supabase():
                     "MONTH_SPENT": month_stats[0]["MONTH_SPENT"],
                     "MONTH_GAINED": month_stats[0]["MONTH_GAINED"],
                     "MONTH_AVG_DAILY_SPEND": month_stats[0]["MONTH_AVG_DAILY_SPEND"],
-                    "CAT_SPEND": cat_stats
+                    "CAT_SPEND": cat_stats,
+                    "DAILY_SPEND": daily_stats
                 }
                 return res
             except psycopg2.Error as e:

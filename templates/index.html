@@ -100,26 +100,45 @@
             </div>
           </div>
           <div class="home-mtd-stats-container">
-            <span>Month Till Date</span>
-            <span>Total Spent</span>
-            <span id="monthSpent">3400</span>
-            <span>Total Gained</span>
-            <span id="monthGained">3400</span>
-            <span>Daily Avg. Spend</span>
-            <span id="monthDailyAvgSpent">3400</span>
+            <span>MTD Stats</span>
+            <ul>
+              <li>
+                <span>Total Spent (Non Recurring)</span>
+                <span id="monthSpent">Loading...</span>
+              </li>
+              <!-- <li>
+                <span>Total Spent (Recurring)</span>
+                <span id="monthSpent">Loading...</span>
+              </li> -->
+              <li>
+                <span>Total Gained</span>
+                <span id="monthGained">Loading...</span>
+              </li>
+              <li>
+                <span>Daily Avg. Spend</span>
+                <span id="monthDailyAvgSpent">Loading...</span>
+              </li>
+            </ul>
+          </div>
+          <div class="home-mtd-daily-container">
+            <span>MTD Daily Spend</span>
+            <div class="chart">
+              <canvas id="monthDailyChart"></canvas>
+            </div>
           </div>
           <div class="home-mtd-container">
-            <span>Categorical Spend</span>
+            <span>MTD Categorical Spend</span>
             <div class="chart">
               <canvas id="monthCatChart"></canvas>
               <div class="values">
                 <ul>
-                  <li>Travel: <span>4500</span></li>
-                  <li>Travel: <span>4500</span></li>
+                  <!-- <li>Travel: <span>4500</span></li>
+                  <li>Travel: <span>4500</span></li> -->
                 </ul>
               </div>
             </div>
           </div>
+          <div class="spacer"></div>
         </div>
         <div class="floating-button" id="">
           <button id="addTnxPopBtn" onclick="addTxnPopup(1)">+</button>
