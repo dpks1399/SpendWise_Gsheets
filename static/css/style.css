@@ -589,7 +589,7 @@ body {
 
 .amount {
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 400;
 }
 
 .amount.negative {
@@ -724,7 +724,7 @@ body {
 .edit-container .buttons button{
     height: 50px;
     width: 150px;
-    border-radius: 25px;
+    border-radius: 10px;
     border: 1px solid var(--g4);
     background-color: var(--g1);
     color: var(--g4);
@@ -769,7 +769,8 @@ body {
     width: 100%;
     gap: 10px;
     justify-content: space-between;
-    padding: 10px 0px;
+    font-size: 14px;
+    /* padding: 10px 0px; */
 }
 
 .home-today-container .spent,
