@@ -857,7 +857,7 @@ body {
     display: flex;
     flex-direction: column;
     border: 1px solid var(--g2);
-    height: 120px;
+    height: 100px;
     border-radius: 20px;
     background: white;
     margin-bottom: 10px;
@@ -868,18 +868,18 @@ body {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     display: flex;
-    height: 40px;
+    height: 30px;
     padding: 5px 20px;
     gap: 15px;
     align-items: center;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
 }
 
 .due-record .head .typ-logo {
     background: rgb(241, 97, 97);
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
