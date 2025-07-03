@@ -1,7 +1,7 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request # type: ignore
 import configparser
 from worker_supabase import Supabase
-import bcrypt 
+import bcrypt  # type: ignore
 
 app = Flask(__name__)
 sb = Supabase()
