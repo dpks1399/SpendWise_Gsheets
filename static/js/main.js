@@ -213,6 +213,40 @@ function populateAccOverview(data){
         let spare = data[i].SPARE_AMOUNT;
         let identifier = data[i].IDENTIFIER;
         
+        // let block = `
+        //         <div class="overview-card">
+        //             <div class="header">
+        //                 <h4>${name}</h4>
+        //                 <div class="overview-icon"><img src="static/assets/banklogos/${identifier}.png"></div>
+        //             </div>
+        //             <div class="body">
+        //                 <span>Net Available:</span>
+        //                 <span>&#8377 ${spare}</span>
+        //             </div>
+        //             <div class="footer">
+        //                 <div class="f1">
+        //                     <div>
+        //                         <span>Balance: </span>
+        //                         <span>&#8377 ${balance}</span>
+        //                     </div>
+        //                     <div>
+        //                         <span>Dues: </span>
+        //                         <span>&#8377 ${due}</span>
+        //                     </div>
+        //                 </div>
+        //                 <div class="f2">
+        //                     <div>
+        //                         <span>Income: </span>
+        //                         <span>&#8377 ${income}</span>
+        //                     </div>
+        //                     <div>
+        //                         <span>Expense: </span>
+        //                         <span>&#8377 ${expense}</span>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //             `
         let block = `
                 <div class="overview-card">
                     <div class="header">
@@ -221,27 +255,27 @@ function populateAccOverview(data){
                     </div>
                     <div class="body">
                         <span>Net Available:</span>
-                        <span>&#8377 ${spare}</span>
+                        <span>&#8377 XXXXX</span>
                     </div>
                     <div class="footer">
                         <div class="f1">
                             <div>
                                 <span>Balance: </span>
-                                <span>&#8377 ${balance}</span>
+                                <span>&#8377 XXXXX</span>
                             </div>
                             <div>
                                 <span>Dues: </span>
-                                <span>&#8377 ${due}</span>
+                                <span>&#8377 XXXXX</span>
                             </div>
                         </div>
                         <div class="f2">
                             <div>
                                 <span>Income: </span>
-                                <span>&#8377 ${income}</span>
+                                <span>&#8377 XXXXX</span>
                             </div>
                             <div>
                                 <span>Expense: </span>
-                                <span>&#8377 ${expense}</span>
+                                <span>&#8377 XXXXX</span>
                             </div>
                         </div>
                     </div>
@@ -360,7 +394,7 @@ function getformattedDatetime(dval, tval) {
     if (!tval) {
         formattedTime = `${hours}:${minutes}:00`;
     } else {
-        formattedDate = `${tval}:00`;
+        formattedTime = `${tval}:00`;
     }
     return `${formattedDate} ${formattedTime}`
 }
@@ -539,7 +573,7 @@ function addTxn() {
     var category = '-1';
     var cust_category='-1';
     var source = document.getElementById("source-drop-sc01").value;
-    var dateTime = getformattedDatetime(document.getElementById("transactionDateSpan-sc01").value, document.getElementById("transactionTimeSpan-sc01").value);
+    var dateTime = getformattedDatetime(document.getElementById("transactionDateSpan-sc01").textContent, document.getElementById("transactionTimeSpan-sc01").textContent);
 
     if (!document.getElementById("custom-category-input").value) {
         category = document.getElementById("category-drop-sc01").value;
