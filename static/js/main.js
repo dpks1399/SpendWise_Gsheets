@@ -1,5 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", function() {
+    beautify();
     fetchCategories();  // remove paid recurring categories
     fetchSources();
     fetchOverview();
@@ -9,6 +10,15 @@ document.addEventListener("DOMContentLoaded", function() {
     updateCurrentDateTimeInAddTransaction();
     // addTxnPopup(1);
 });
+
+function beautify(){
+    const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    const parentDiv = document.getElementById("home-screen-content");
+    const spans = parentDiv.querySelectorAll("span");
+    spans.forEach(span => {
+    span.textContent = span.textContent.replace(/MTD/g, currentMonth);
+    });
+}
 
 function updateCurrentDateTimeInAddTransaction(){
     const currentDate = new Date();
