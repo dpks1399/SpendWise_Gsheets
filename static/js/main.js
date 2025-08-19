@@ -705,12 +705,20 @@ function selectNav(id){
     const navs = document.querySelectorAll('.nav-item');
     navs.forEach(nav => {
         nav.classList.remove("nav-active");
+        const icon = nav.querySelector("i");
+        if (icon) {
+            icon.className = icon.className.replace("bxs-", "bx-");
+        }
     });
 
     const activeNav = document.getElementById(id);
     // const title = document.getElementById("screenTitle");
     if (activeNav) {
         activeNav.classList.add("nav-active");
+        const icon = activeNav.querySelector("i");
+        if (icon) {
+            icon.className = icon.className.replace("bx-", "bxs-");
+        }
         // title.textContent = activeScreen.getAttribute("name")
         // console.log(activeScreen.getAttribute("name"))
     }

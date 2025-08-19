@@ -1,14 +1,14 @@
 :root {
     --g1: #FaFaFa; /* Lightest */
-    --g2: #B0BFC6;
-    --g3: #78919C;
-    --g4: #566F7A;
-    --g5: #273239; /* Darkest e5b80b */
-    --a1: #890f1e;
+    --g2: #DEE2E6;
+    --g3: #ADB5BD;
+    --g4: #495057;
+    --g5: #212529; /* Darkest e5b80b */
+    --a1: #000000;
     --a2: #e5b80b;
     --sred: #e5737395;
     --sgreen: #81c784bb;
-    --bgmain: #eff0f0;
+    --bgmain: #f8f9fa;
 }
 
 * {
@@ -356,20 +356,22 @@ body {
     color: var(--g3);
 }
 
-/* .nav-item i{
-    height: 30px;
-    width: 50px;
-    text-align: center;
-    line-height: 30px;
-    border-radius: 15px;
-} */
+.nav-item i{
+    font-size: 24px;
+}
+
+.nav-item span{
+    display: none;
+}
 
 .nav-active i{
     color: var(--a1);
+    font-size: 24px;
     /* font-weight: 700; */
 }
 .nav-active span{
     color: var(--a1);
+    display: block;
     font-weight: 700;
 }
 
@@ -964,9 +966,7 @@ body {
 }
 
 /* 
-####################################################################################
 DISPOSABLE - Temporary css for temporary elements. May not be used later 
-####################################################################################
  */
 
  .homeScreenContent h3{

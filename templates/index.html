@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpendWise</title>
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/calc.css') }}">
@@ -16,10 +17,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" href="{{ url_for('static', filename='icons/icon-192.png') }}">
   </head>
   <body>
-    <!-- <div class="overlay" id="overlay" onclick="toggleOverlay(0)" style="display: none;"></div> -->
     <div class="app-bar">
       <div class="menu-icon" id="titleIcon">
         <i class="material-icons" id="menuOpen" style="display: block;">menu</i>
@@ -321,15 +323,13 @@
           <button class="submitTxn" onclick="addTxn()">Add Transaction</button>
         </div>
       </div>
-      <div class="screen" id="calculator-screen" name="Calculator" style="display: none;">
-      </div>
     </div>
 
     <div class="bottom-nav">
-      <div class="nav-item nav-active" id="nav-home"><i class="material-icons">home</i><span>Home</span></div>
-      <div class="nav-item" id="nav-view-transactions"><i class="material-icons">view_list</i><span>Transactions</span></div>
-      <div class="nav-item" id="nav-overview"><i class="material-icons">fact_check</i><span>Budgets</span></div>
-      <div class="nav-item" id="nav-recurring"><i class="material-icons">event_repeat</i><span>Recurring</span></div>
+      <div class="nav-item nav-active" id="nav-home"><i class='bx  bx-home-alt'  ></i><span>Home</span></div>
+      <div class="nav-item" id="nav-view-transactions"><i class='bx  bx-receipt'  ></i> <span>Transactions</span></div>
+      <div class="nav-item" id="nav-overview"><i class='bx  bx-wallet-note'  ></i> <span>Budgets</span></div>
+      <div class="nav-item" id="nav-recurring"><i class='bx  bx-calendar-detail'  ></i> <span>Recurring</span></div>
       <!-- <div class="nav-item" id="nav-reports"><i class="material-icons">equalizer</i><span>Reports</span></div> -->
     </div>
 
@@ -359,6 +359,14 @@
       </div>
     </div>
 
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/static/sw.js')
+            .catch(err => console.error('SW registration failed', err));
+        });
+      }
+    </script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/calc.js') }}"></script>
   </body>
