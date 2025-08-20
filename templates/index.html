@@ -22,7 +22,7 @@
     <link rel="icon" href="{{ url_for('static', filename='icons/icon-192.png') }}">
   </head>
   <body>
-    <div class="app-bar">
+    <div class="app-bar"style="display: none;">
       <div class="menu-icon" id="titleIcon">
         <i class="material-icons" id="menuOpen" style="display: block;">menu</i>
         <i class="material-icons" id="backHome" style="display: none;">arrow_back</i>
@@ -75,6 +75,15 @@
     <div class="overlay" id="menu-overlay" style="display: none;"></div>
     <div class="main-content">
       <div class="screen" id="home-screen" name="Home">
+        <div class="hero">
+          <div class="left">
+            <span id="s1">Hi Deepak! 👋🏻</span>
+            <span id="s2"><em>"The art is not in making money, but in keeping it.”</em></span>
+          </div>
+          <div class="right">
+            <i class='bx  bx-user'  ></i> 
+          </div>
+        </div>
         <div class="homeScreenContent" id="home-screen-content">
           <div class="homeAlertContainer" id="home-alert-container">
             <div class="homeAlert">
@@ -150,8 +159,15 @@
         </div>
       </div>
       <div class="screen" id="view-transactions-screen" name="Transactions" style="display: none;">
+        <div class="app-bar">
+          <div class="app-bar-head" id="">
+            <i class='bx  bx-arrow-left-stroke-circle'  ></i> 
+          </div>
+          <div class="app-bar-title" id="screenTitle">Transactions</div>
+          <div class="app-bar-tail" id=""><i class='bx  bx-filter'  ></i> </div>
+        </div>
         <div class="viewTxnContainer" id="view-Txn-Container">
-          <!-- <h4>14 Feb 2025</h4>
+          <h4>14 Feb 2025</h4>
           <div class="expense-card expense">
             <div class="icon"><img class="txn-logo" src="{{ url_for('static', filename='assets/banklogos/idfb.png') }}"></div>
             <div class="details">
@@ -160,8 +176,17 @@
                 <p>2025-02-01 | 12:30 PM</p>
             </div>
             <div class="amount negative">- ₹350</div>
-          </div> -->
-          <div class="placeholder">Loading...</div>
+          </div>
+          <div class="expense-card expense">
+            <div class="icon"><img class="txn-logo" src="{{ url_for('static', filename='assets/banklogos/idfb.png') }}"></div>
+            <div class="details">
+                <h3>Food & Dining</h3>
+                <p>McDonald's Lunch - Visa Card</p>
+                <p>2025-02-01 | 12:30 PM</p>
+            </div>
+            <div class="amount negative">- ₹350</div>
+          </div>
+          <!-- <div class="placeholder">Loading...</div> -->
         </div>
         <div class="edit-container" id="editTxnContainer">
           <div class="txn" id="edittxnlabel">
@@ -175,11 +200,25 @@
         <div class="overlay" id="txn-overlay" style="display: none;"></div>
       </div>
       <div class="screen" id="overview-screen" name="Budgets" style="display: none;">
+        <div class="app-bar">
+          <div class="app-bar-head" id="">
+            <i class='bx  bx-arrow-left-stroke-circle'  ></i> 
+          </div>
+          <div class="app-bar-title" id="screenTitle">Budgets</div>
+          <div class="app-bar-tail" id=""><i class='bx  bx-filter'  ></i> </div>
+        </div>
         <div class="floating-button" id="">
           <button id="" onclick="">+</button>
         </div>
       </div>
       <div class="screen" id="recurring-screen" name="Recurring" style="display: none;">
+        <div class="app-bar">
+          <div class="app-bar-head" id="">
+            <i class='bx  bx-arrow-left-stroke-circle'  ></i> 
+          </div>
+          <div class="app-bar-title" id="screenTitle">Recurring Payments</div>
+          <div class="app-bar-tail" id=""><i class='bx  bx-filter'  ></i> </div>
+        </div>
         <div class="rec-payments" id="recPayments">
           <!-- <div class="rec-record paid" id="">
             <div class="date">
@@ -277,6 +316,13 @@
         <!-- <div class="heading1">Reports (Placeholder)</div> -->
       </div>
       <div class="screen" id="add-transaction-screen" name="Add Transaction" style="display: none;">
+        <div class="app-bar">
+          <div class="app-bar-head" id="">
+            <i class='bx  bx-arrow-left-stroke-circle'  ></i> 
+          </div>
+          <div class="app-bar-title" id="screenTitle">Add Transaction</div>
+          <div class="app-bar-tail" id=""></div>
+        </div>
         <div class="txnContainer" id="addTxnPopup">
           <div class="txn-type-container ">
             <button class="selected" id="type-btn-expenditure" name="expenditure" onclick="changeTxnTyp(0)">Expense</button>
@@ -286,14 +332,14 @@
           <div class="amount-div-sc01">
             <!-- <span>&#8377</span> -->
             <i class="material-icons">currency_rupee</i>
-            <input type="number" id="amount-sc01" name="amount" placeholder="Enter Amount">
+            <input type="number" id="amount-sc01" name="amount" placeholder="Amount">
             <!-- <i class="material-icons">calculate</i> -->
             <i class="fa-solid fa-calculator" id="calculatorIcon"></i>
           </div>
           <div class="amount-div-sc01">
             <i class="material-icons">category</i>
             <select id="category-drop-sc01" name="category">
-              <option value="">Choose Category</option>
+              <option value="">Category</option>
             </select>
             <input type="text" id="custom-category-input" name="custom-category" placeholder="Enter New Category" style="display: none;">
             <button type="button" id="add-category-btn" onclick="toggleCategoryInput()"><i class="material-icons">playlist_add</i></button>
@@ -301,12 +347,12 @@
           <div class="amount-div-sc01">
             <i class="material-icons">account_balance</i>
             <select id="source-drop-sc01" name="source">
-              <option value="">Choose Account</option>
+              <option value="">Account</option>
             </select>
           </div>
           <div class="amount-div-sc01">
             <i class="material-icons">notes</i>
-            <input type="text" id="description-sc01" name="description" placeholder="Enter Description">
+            <input type="text" id="description-sc01" name="description" placeholder="Description">
           </div>
           <div class="date-time-container">
             <div class="item" id="dateDiv">
@@ -333,6 +379,7 @@
       <!-- <div class="nav-item" id="nav-reports"><i class="material-icons">equalizer</i><span>Reports</span></div> -->
     </div>
 
+    <div class="overlay" id="calcOverlay" style="display: none;"></div>
     <div class="sc-calc-calculator" id="calcPopup" style="display: none;">
       <input type="text" id="sc-calc-display" disabled>
       <div class="sc-calc-buttons">
@@ -352,7 +399,7 @@
           <button onclick="scCalcAppendValue('2')">2</button>
           <button onclick="scCalcAppendValue('3')">3</button>
           <button class="sc-calc-operator" onclick="scCalcAppendValue('+')">+</button>
-          <button class="sc-calc-equal" style="font-size: 1.2em;" onclick="scCalcLogFinalValue()">Done</button>
+          <button style="font-size: 1.2em;" onclick="scCalcLogFinalValue()">Done</button>
           <button onclick="scCalcAppendValue('0')">0</button>
           <button onclick="scCalcAppendValue('.')">.</button>
           <button class="sc-calc-equal" onclick="scCalcCalculate()">=</button>

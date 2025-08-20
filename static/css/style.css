@@ -54,13 +54,13 @@ body {
     align-items: center;
     justify-content: space-between;
     height: 60px;
-    background: var(--bgmain);
-    color: var(--g5);
+    background: var(--a1);
+    color: white;
     box-sizing: border-box;
     width: 100%;
     z-index: 1000;
 }
-.menu-icon, .profile-icon {
+.app-bar-head, .app-bar-tail {
     font-size: 24px;
     cursor: pointer;
     display: flex;
@@ -396,14 +396,18 @@ body {
     display: flex;
     flex-direction: column;
     padding: 10px;
-    gap: 10px;
+    /* gap: 10px; */
 }
 
 .viewTxnContainer h4{
-    padding-left: 15px;
-    padding-top: 10px;
-    color: var(--g4);
-    font-weight: 500;
+    /* padding-left: 15px; */
+    /* padding-top: 10px; */
+    color: var(--a1);
+    font-weight: 400;
+    background: var(--g2);
+    padding: 10px 15px;
+    margin-top: 20px;
+    font-size: 14px;
 }
 
 .viewTxnContainer .placeholder{
@@ -483,77 +487,27 @@ body {
     height: 100%;
 }
 
-/* .card {
-    background: linear-gradient(135deg, #004e92, #000428); 
-    color: white;
-    width: 350px;
-    height: 200px;
-    border-radius: 15px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-}
-
-.card .account-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.card .balance-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.card .balance-info div {
-    text-align: center;
-}
-
-.card .balance-info .amount {
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.card .total-balance {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.card .logo {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    opacity: 0.8;
-} */
-
 
 .expense-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: white;
-    border-radius: 10px;
+    /* background: white; */
+    /* border-radius: 10px; */
     padding: 12px;
     min-height: 80px;
-    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.1); */
     /* border-left: 5px solid; */
-    /* border-bottom: 5px solid; */
+    border-bottom: 1px dashed var(--g3);
 }
 
 .txn-logo{
     height: 25px;
 }
 
-.expense-card.expense {
-    border-color: #FF4D4D;
-}
+/* .expense-card.expense {
+    /* border-color: #FF4D4D; 
+} */
 
 .expense-card.income {
     border-color: #4CAF50;
@@ -1008,15 +962,50 @@ th {
     z-index: 99999;
 }
 
+.hero{
+    height: 120px;
+    background: var(--a1);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.hero .left{
+    display: flex;
+    flex-direction: column;
+    color: white;
+    gap: 5px;
+}
+
+.hero .right{
+        color: white;
+    font-size: 26px;
+    border: 1px solid var(--g3);
+    display: flex;
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: var(--g4);
+}
+
+.hero .left #s1{
+    font-size: 24px;
+}
+
+.hero .left #s2{
+    font-size: 12px;
+    color: var(--g3);
+}
+
+
 .slider-container {
     position: relative;
-    /* width: 100%; */
-    /* max-width: 400px; */
-    /* margin: 10px; */
     padding: 10px 20px 0px 20px;
     overflow: hidden;
-    background-color: white;
-    border-radius: 10px;
+    background-color: var(--a1);
 }
 
 .slider {
@@ -1024,9 +1013,8 @@ th {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     gap: 15px;
-    /* padding: 10px; */
     scroll-behavior: smooth;
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    scrollbar-width: none;
 }
 
 .slider::-webkit-scrollbar {
@@ -1038,14 +1026,13 @@ th {
     flex: 0 0 100%; 
     max-width: 100%;
     aspect-ratio: 2;
-    background: linear-gradient(135deg, #890f1e, #b31224, #890f1e);
-    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); */
+    background: linear-gradient(135deg, var(--g5), var(--g4), var(--g5));
     color: white;
     padding: 20px;
     border-radius: 10px;
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
     text-align: center;
     scroll-snap-align: center;
+    border: 1px solid var(--g4);
 }
 .overview-placeholder {
     max-width: 100%;
@@ -1112,6 +1099,7 @@ th {
 .dots {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 10px 0px;
 }
 
@@ -1128,5 +1116,7 @@ th {
 
 .dot.active {
     background: var(--a1);
-    border: 1px solid var(--a1);
+    border: 1px solid var(--g1);
+    width: 12px;
+    height: 12px;
 }

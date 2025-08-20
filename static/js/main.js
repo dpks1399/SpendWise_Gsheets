@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // fetchRecurring();
     showScreen('home-screen');  // Show the Add Transaction screen by default
     updateCurrentDateTimeInAddTransaction();
-    // addTxnPopup(1);
 });
 
 function beautify(){
@@ -526,7 +525,7 @@ function populateDropdown(dropdownId, items) {
 
     const option = document.createElement('option');
     option.value = '';
-    option.textContent = 'Select ' + def;
+    option.textContent = def;
     option.selected = true;
     dropdown.appendChild(option);
 
@@ -769,6 +768,7 @@ document.getElementById('nav-recurring').addEventListener('click', () => {
 
 document.getElementById('calculatorIcon').addEventListener('click', () => {
     document.getElementById("calcPopup").style.display= 'flex';
+    document.getElementById("calcOverlay").style.display= 'block';
     // selectNav('nav-recurring');
 });
 
@@ -782,6 +782,11 @@ document.getElementById('menu-overlay').addEventListener('click', () => {
 
 document.getElementById('txn-overlay').addEventListener('click', () => {
     editDeleteTransaction(0);
+});
+
+document.getElementById('calcOverlay').addEventListener('click', () => {
+    document.getElementById("calcPopup").style.display= 'none';
+    document.getElementById("calcOverlay").style.display= 'none';
 });
 
 document.getElementById('backHome').addEventListener('click', () => {

@@ -30,5 +30,6 @@ function scCalcLogFinalValue() {
     document.getElementById('amount-sc01').value = res;
     document.getElementById('sc-calc-display').value = '';
     document.getElementById("calcPopup").style.display= 'none';
+    document.getElementById("calcOverlay").style.display= 'none';
     console.log(document.getElementById('sc-calc-display').value);
 }
