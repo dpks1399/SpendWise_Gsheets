@@ -62,7 +62,7 @@ function fetchRecurring(){
 }
 
 function getColors(val){
-    let opa = 0.6;
+    let opa = 0.7;
     let res = [];
     const Colors = [
         `rgba(255, 87, 51, ${opa})`,   // Red-Orange
@@ -114,100 +114,99 @@ function populateMonthOverview(data){
     const ctxb = document.getElementById("monthCatChart").getContext("2d");
     const ctxl = document.getElementById("monthDailyChart").getContext("2d");
 
-    let colors = getColors(cats.length)
-    let li = ''
-    for(let i=0; i<cats.length;i+=1){
-        li = li + `<li><div style="background-color: ${colors[i]}"></div><div><span>${cats[i]}</span><span>&#8377 ${amnt[i]}</span></div></li>`
-    }
-    li = li + `<hr><li><div style="background-color: white"></div><div><span>Total</span><span>&#8377 ${data["MONTH_SPENT"]}</span></div></li>`
-    document.querySelector('.home-mtd-container .chart .values ul').innerHTML = li;
+    let colors = getColors(cats.length);
 
-    Chart.register(ChartDataLabels);
-    new Chart(ctxb, {
-        type: "bar", // Doughnut chart type
-        data: {
-            labels: cats,
-            datasets: [{
-                data: percentage, // Data values
-                backgroundColor: colors,
-                borderColor: "white",
-                borderWidth: 2,
-                borderRadius: 0,
-            }]
-        },
-        options: {
-            indexAxis:'y',
-            responsive: true,
-            scales: {
-                x: {
-                    min: 0,
-                    max: Math.max(...percentage) * 1.25,
-                    ticks: { display: false },
-                    grid: { display: true }
-                },
-                y: {
-                    ticks: { display: false },
-                    grid: { display: false }
-                }
-            },
-            plugins: {
-                legend: { display: false },
-                datalabels: {
-                    anchor: "end", // Position at the end of the bar
-                    align: "end",  // Move label outside the bar (to the right)
-                    color: "black",
-                    font: { weight: 200, size: 12 },
-                    formatter: (value) => value + "%"
-                }
-            },
-        }
-    });
+// build your custom legend list (unchanged)
+let li = '';
+for (let i = 0; i < cats.length; i += 1) {
+    li += `<li><div style="background-color: ${colors[i]}"></div><div><span>${cats[i]}</span><span>&#8377 ${amnt[i]}</span></div></li>`;
+}
+li += `<hr><li><div style="background-color: white"></div><div><span>Total</span><span>&#8377 ${data["MONTH_SPENT"]}</span></div></li>`;
+document.querySelector('.home-mtd-container .chart .values ul').innerHTML = li;
 
-    let dailySpend = []
-    for (let i=0; i<data["DAILY_SPEND"].length;i+=1){
-        // console.log(data.)
-        dailySpend.push(data["DAILY_SPEND"][i]["AMOUNT"])
-    }
-    new Chart(ctxl, {
-        type: 'line',
-        data: {
-            labels: Array.from({ length: 31 }, (_, i) => `${i + 1}`), // X-axis (Dates of the month)
-            datasets: [{
-                label: '',
-                data: dailySpend,
-                borderColor: 'rgba(52, 152, 219, 1)', // Blue Line
-                backgroundColor: 'rgba(52, 152, 219, 0.2)', // Light Fill
-                borderWidth: 1,
-                pointBackgroundColor: 'rgba(52, 152, 219, 1)', // Red Points
-                pointRadius: 1,
-                pointHoverRadius: 7,
-                fill: false, // Fill under the line
-                tension: 0 // Smooth curves
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    title: { display: false, text: 'Day of the Month' },
-                    grid: { display: false },
-                    ticks:{font: {size: 10}}
-                },
-                y: {
-                    beginAtZero: true,
-                    ticks: {display: false},
-                    title: { display: false, text: 'Sales ($)' },
-                    grid: { color: 'rgba(0, 0, 0, 0.1)' }
-                }
-            },
-            plugins: {
-                legend: { display: false, position: 'top' },
-                tooltip: { enabled: true },
-                datalabels: {display: false}
+Chart.register(ChartDataLabels);
+
+new Chart(ctxb, {
+    type: 'doughnut',                      // 👈 switched from 'bar' to 'pie'
+    data: {
+    labels: cats,
+    datasets: [{
+        data: percentage,             // each slice value (e.g., % of total)
+        backgroundColor: colors,
+        borderColor: 'white',
+        borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: false,
+        maintainAspectRatio: true,     // optional; remove if you prefer default ratio
+        cutout: '50%',
+        plugins: {
+            legend: { display: false },   // you already render a custom legend list
+            tooltip: { enabled: true },
+            datalabels: {
+                // For pies, use align + offset to place labels nicely
+                align: 'center',               // positions labels just outside the arc
+                offset: 0,                  // push labels a bit outward
+                color: 'black',
+                font: { weight: 400, size: 12 },
+                formatter: (value, ctx) => value + '%'  // show "NN%"
+                // If you want "Category: NN%":
+                // formatter: (value, ctx) => `${ctx.chart.data.labels[ctx.dataIndex]}: ${value}%`
             }
         }
-    });
+    }
+});
+
+let dailySpend = [];
+for (let i = 0; i < data["DAILY_SPEND"].length; i++) {
+    dailySpend.push(data["DAILY_SPEND"][i]["AMOUNT"]);
+}
+
+// Force labels to 31 days
+const labels = Array.from({ length: 31 }, (_, i) => `${i + 1}`);
+
+// Pad dailySpend to length 31 if needed
+while (dailySpend.length < 31) {
+  dailySpend.push(null);   // null leaves a gap; use 0 if you want empty bars instead
+}
+const barColor   = getComputedStyle(document.documentElement).getPropertyValue('--g4').trim();
+new Chart(ctxl, {
+    type: 'bar',
+    data: {
+    labels,
+    datasets: [{
+        label: '',
+        data: dailySpend,
+        backgroundColor: dailySpend.map(v => v > 600 ? 'rgba(231, 76, 60, 0.7)' : 'rgba(52, 152, 219, 0.6)'),
+        // backgroundColor: barColor,
+        borderColor: 'rgba(52, 152, 219, 1)',
+        borderWidth: 0,
+        borderRadius: 3
+    }]
+    },
+    options: {
+        responsive: false,
+        scales: {
+            x: {
+                title: { display: false, text: 'Day of the Month' },
+                grid: { display: false },
+                ticks: { font: { size: 12 } }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: { display: true },
+                title: { display: false, text: 'Sales ($)' },
+                grid: { color: 'rgba(0, 0, 0, 0.1)' }
+            }
+        },
+        plugins: {
+            legend: { display: false },
+            tooltip: { enabled: true },
+            datalabels: { display: true , anchor: 'end', align: 'end'}
+        }
+    }
+});
 }
 
 function populateAccOverview(data){
@@ -297,6 +296,7 @@ function populateAccOverview(data){
     const slider = document.getElementById("slider");
     const dotsContainer = document.getElementById("dots");
     const cards = document.querySelectorAll(".overview-card");
+    dotsContainer.innerHTML = '';
 
     // Create dots dynamically
     cards.forEach((_, index) => {
@@ -772,7 +772,7 @@ document.getElementById('calculatorIcon').addEventListener('click', () => {
     // selectNav('nav-recurring');
 });
 
-document.getElementById('menuOpen').addEventListener('click', () => {
+document.getElementById('profile_icon').addEventListener('click', () => {
     toggleMenu(1);
 });
 

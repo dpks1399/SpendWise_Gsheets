@@ -750,10 +750,6 @@ body {
     color: #155724;
 }
 
-#monthCatChart{
-    /* width: 200px !important; */
-    height: 200px !important;
-}
 .home-mtd-container .chart{
     display: flex;
     flex-direction: column;
@@ -1036,8 +1032,8 @@ th {
 }
 .overview-placeholder {
     max-width: 100%;
-    aspect-ratio: 1.585;
-    background: var(--g1);
+    aspect-ratio: 2;
+    background: linear-gradient(135deg, var(--g5), var(--g4), var(--g5));
     color: var(--g3);
     padding: 20px;
     border-radius: 10px;
@@ -1119,4 +1115,14 @@ th {
     border: 1px solid var(--g1);
     width: 12px;
     height: 12px;
+}
+
+#dailyChart{
+    /* height: 250px ; */
+    width: 100%;
+    overflow-x: auto;
+}
+#monthDailyChart{
+    min-width: 1000px;
+    /* height: 250px; */
 }

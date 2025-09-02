@@ -80,7 +80,7 @@
             <span id="s1">Hi Deepak! 👋🏻</span>
             <span id="s2"><em>"The art is not in making money, but in keeping it.”</em></span>
           </div>
-          <div class="right">
+          <div class="right" id="profile_icon">
             <i class='bx  bx-user'  ></i> 
           </div>
         </div>
@@ -98,7 +98,9 @@
                   <span>Loading...</span>
                 </div>
             </div>
-            <div class="dots" id="dots"></div>
+            <div class="dots" id="dots">
+              <div class="dot active"></div>
+            </div>
           </div>
           <div class="home-today-container">
             <span>Today</span>
@@ -136,14 +138,14 @@
           </div>
           <div class="home-mtd-daily-container">
             <span>MTD Daily Spend</span>
-            <div class="chart">
-              <canvas id="monthDailyChart"></canvas>
+            <div class="chart" id="dailyChart">
+              <canvas id="monthDailyChart" width="1000" height="250"></canvas>
             </div>
           </div>
           <div class="home-mtd-container">
             <span>MTD Categorical Spend</span>
             <div class="chart">
-              <canvas id="monthCatChart"></canvas>
+              <canvas id="monthCatChart" width="250" height="250"></canvas>
               <div class="values">
                 <ul>
                   <!-- <li>Travel: <span>4500</span></li>
