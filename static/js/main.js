@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fetchOverview();
     fetchTransactions();
     fetchRecurring();
-    showScreen('recurring-screen');  // Show the Add Transaction screen by default
+    showScreen('home-screen');  // Show the Add Transaction screen by default
     updateCurrentDateTimeInAddTransaction();
 });
 
