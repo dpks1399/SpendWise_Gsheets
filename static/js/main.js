@@ -5,10 +5,14 @@ document.addEventListener("DOMContentLoaded", function() {
     fetchSources();
     fetchOverview();
     fetchTransactions();
-    // fetchRecurring();
-    showScreen('home-screen');  // Show the Add Transaction screen by default
+    fetchRecurring();
+    showScreen('recurring-screen');  // Show the Add Transaction screen by default
     updateCurrentDateTimeInAddTransaction();
 });
+
+function alert_pop(msg){
+    alert(msg);
+}
 
 function beautify(){
     const currentMonth = new Date().toLocaleString('default', { month: 'long' });
@@ -195,7 +199,7 @@ new Chart(ctxl, {
             },
             y: {
                 beginAtZero: true,
-                ticks: { display: true },
+                ticks: { display: false },
                 title: { display: false, text: 'Sales ($)' },
                 grid: { color: 'rgba(0, 0, 0, 0.1)' }
             }
@@ -203,7 +207,12 @@ new Chart(ctxl, {
         plugins: {
             legend: { display: false },
             tooltip: { enabled: true },
-            datalabels: { display: true , anchor: 'end', align: 'end'}
+            datalabels: { 
+                display: true , 
+                anchor: 'end', 
+                align: 'end',
+                offset: '-5'
+            }
         }
     }
 });
@@ -319,41 +328,84 @@ function populateRecurring(txns){
     let overdue_flag = 0;
     for(let i=0; i<txns.length; i+=1){
         let pay_day = txns[i].PAY_DAY;
-        let day = pay_day.split(' ')[0];
-        let month = pay_day.split(' ')[1];
         let cat_name = txns[i].CATEGORY_NAME;
         let amount = txns[i].AMOUNT;
-        let id = txns[i].ID;
+        let id = `rectxn-${txns[i].ID}`;
         let ts = txns[i].PAYMENT_TS;
         let type = '';
         let type_text = txns[i].PAY_STATUS;
 
         if(type_text == 'Overdue'){ overdue_flag = 1;}
         
-        type = (type_text == 'Paid') ? 'paid' : (type_text == 'Overdue') ? 'overdue' : 'unpaid';
+        type = (type_text == 'Paid') ? 'rec-paid' : (type_text == 'Overdue') ? 'rec-overdue' : 'rec-upcoming';
+        ico = (type_text == 'Paid') ? 'check-circle' : (type_text == 'Overdue') ? 'alert-octagon' : 'stopwatch';
         
-        block = `
-                <div class="rec-record ${type}" id="${id}">
-                    <div class="date">
-                        <div class="txn_date">${day}</div>
-                        <div class="txn_month">${month}</div>
-                    </div>
-                    <div class="content">
-                        <h4>${cat_name}</h4>
-                        <span>&#8377 ${amount} | ${ts}</span>
-                    </div>
+        if(type == 'rec-paid'){
+            block = `
+                <div class="due-record ${type}" id="${id}">
+                    <div class="head">
+                    <div class="due-date">${pay_day}</div>
                     <div class="status">
-                        <span>${type_text}</span>
+                        <div class="txt">Paid</div>
+                        <div class="status-logo"><i class='bx  bx-${ico}'  ></i></div>
+                    </div>
+                    </div>
+                    <div class="body">
+                    <div class="left">
+                        <span class="title">${cat_name}</span>
+                        <span class="amount">&#8377 ${amount}</span>
+                    </div>
+                    <div class="right">
+                        <div class="txt">
+                        <span class="a">Paid On</span>
+                        <span class="b">${ts}</span>
+                        </div>
+                        <div class="status-logo"><i class="material-icons">done</i></div>
+                    </div>
                     </div>
                 </div>
             `
+        }
+        else {
+            block = `
+                <div class="due-record ${type}" id="${id}">
+                    <div class="head">
+                    <div class="due-date">${pay_day}</div>
+                    <div class="status">
+                        <div class="txt">${type_text}</div>
+                        <div class="status-logo"><i class='bx  bx-${ico}'  ></i></div>
+                    </div>
+                    </div>
+                    <div class="body">
+                    <div class="left">
+                        <span class="title">${cat_name}</span>
+                        <span class="amount">&#8377 ${amount}</span>
+                    </div>
+                    <div class="right">
+                        <div class="" onclick="markRecurringPaid('${id}')">
+                        <span>Mark as paid?</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            `
+        }
         records = records + block;
     }
     console.log("flag" + overdue_flag)
     if(overdue_flag == 1){
-        document.getElementById("home-alert-container").style.display = 'block';
+        // document.getElementById("s2").style.display = 'block';
     }
     document.getElementById('recPayments').innerHTML = records
+}
+
+function markRecurringPaid(id){
+    el = document.getElementById(id)
+    data={}
+    data['category'] = el.querySelector('.title').textContent.trim();
+    data['amount'] = el.querySelector('.amount').textContent.trim().split(' ')[1];
+    data['source'] = 'HDFC Savings'
+    addTxnPopup(1,data)
 }
 
 function sendInsertTxnData(data) {
@@ -370,7 +422,7 @@ function sendInsertTxnData(data) {
         if(data["status"]=="success" && data["result"]==1){
             fetchCategories();
             resetTxn();
-            alert("Transaction Saved");
+            alert_pop("Transaction Saved");
             // addTxnPopup(0);
             fetchTransactions();
         } else {
@@ -443,15 +495,6 @@ function fetchTransactions(){
     });
 }
 
-// function toggleOverlay(val){
-//     if(val==1){
-//        document.getElementById('overlay').style.display = 'block'; 
-//     }
-//     else if(val == 0){
-//         document.getElementById('overlay').style.display = 'none'; 
-//     }
-// }
-
 function editDeleteTransaction(id){
     // alert("edit or delete"+id);
     if(id == 0){
@@ -471,7 +514,7 @@ function populateTransactions(txns){
     let records = ''
     let g_date = ''
     for(let i=0; i<txns.length; i+=1){
-        let id = txns[i].ID;
+        let id = `vtxn-${txns[i].ID}`;
         let source = txns[i].SOURCE //.split(" ").map(word => word[0]).join("").toUpperCase();
         let identifier = txns[i].IDENTIFIER
         let category = txns[i].CATEGORY;
@@ -499,7 +542,7 @@ function populateTransactions(txns){
             g_date = date
         }
         
-        let txn_block = ` <div class="expense-card ${t_val}" id="${id}" onclick="editDeleteTransaction(${id})">
+        let txn_block = ` <div class="expense-card ${t_val}" id="${id}" onclick="editDeleteTransaction('${id}')">
                             <div class="icon"><img class="txn-logo" src="static/assets/banklogos/${identifier}.png"></div>
                             <div class="details">
                                 <h3>${category}</h3>
@@ -591,19 +634,19 @@ function addTxn() {
     }
 
     if (!amount) {
-        alert("Please enter an Amount.");
+        alert_pop("Please enter an Amount.");
         return;
     }
     if (isNaN(amount) || parseFloat(amount) <= 0) {
-        alert("Amount should be a valid positive number.");
+        alert_pop("Amount should be a valid positive number.");
         return;
     }
     if (!category && !cust_category) {
-        alert("Please select a Category.");
+        alert_pop("Please select a Category.");
         return;
     }
     if (!source) {
-        alert("Please select a Source.");
+        alert_pop("Please select a Source.");
         return;
     }
     if (!transactionType) {
@@ -668,26 +711,37 @@ function showScreen(screenId, icon='default') {
     }
 }
 
-function addTxnPopup(val){
+function addTxnPopup(val,data){
     if(val == 0){
         showScreen('home-screen');
-        // document.getElementById("addTxnPopup").style.display = "none";
-        // document.getElementById("addTnxPopBtn").style.display = "block";
-        // document.getElementById("home-screen-content").style.display = "block";
     }
     else if(val == 1){
-        showScreen('add-transaction-screen','back');
-        // document.getElementById("home-screen-content").style.display = "none";
-        // document.getElementById("addTxnPopup").style.display = "block";
-        // document.getElementById("addTnxPopBtn").style.display = "none";
+        if(data){
+            console.log(data)
+            changeTxnTyp(0);
+            document.getElementById("amount-sc01").value = data['amount'];
+            const cat_select = document.getElementById("category-drop-sc01");
+            for (let opt of cat_select.options) {
+                if (opt.text == data['category']) {
+                    opt.selected = true;
+                    break;
+                }
+            }
+            const source_select = document.getElementById("source-drop-sc01");
+            for (let opt of source_select.options) {
+                if (opt.text == data['source']) {
+                    opt.selected = true;
+                    break;
+                }
+            }
+            showScreen('add-transaction-screen','back');
+        }
+        else{
+            showScreen('add-transaction-screen','back');
+        }
     }
     
 }
-
-// function titleBack(){
-//     showScreen('home-screen');
-//     selectNav('nav-home');
-// }
 
 function toggleMenu(val){
     if(val == 1){

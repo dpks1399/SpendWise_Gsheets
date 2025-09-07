@@ -166,9 +166,9 @@ class Supabase():
         rec = self.convert_to_dict(cols,result)
         # print(rec)
         for item in rec:
-            item['PAY_STATUS'] = 'Paid' if item['PAYMENT_TS'] else 'Overdue' if (int(datetime.datetime.now().day) >= int(item['PAY_DAY'])) else 'Unpaid'
+            item['PAY_STATUS'] = 'Paid' if item['PAYMENT_TS'] else 'Overdue' if (int(datetime.datetime.now().day) >= int(item['PAY_DAY'])) else 'Upcoming'
             item['PAYMENT_TS'] = item['PAYMENT_TS'].strftime('%d %b') if item['PAYMENT_TS'] else ''
-            item["PAY_DAY"] = f"{item['PAY_DAY']} {datetime.datetime.now().strftime('%b')}"
+            item["PAY_DAY"] = str(datetime.datetime.today().replace(day=int(item['PAY_DAY'])).strftime("%d %b %Y"))
         return rec
 
     def getTransactions(self):

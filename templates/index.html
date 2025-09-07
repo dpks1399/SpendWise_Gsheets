@@ -78,7 +78,10 @@
         <div class="hero">
           <div class="left">
             <span id="s1">Hi Deepak! 👋🏻</span>
-            <span id="s2"><em>"The art is not in making money, but in keeping it.”</em></span>
+            <span id="s2">
+              <em>"The art is not in making money, but in keeping it.”</em>
+              <!-- <i class='bx  bx-alert-octagon'  ></i> You Have Overdue Payments ! -->
+            </span>
           </div>
           <div class="right" id="profile_icon">
             <i class='bx  bx-user'  ></i> 
@@ -139,7 +142,7 @@
           <div class="home-mtd-daily-container">
             <span>MTD Daily Spend</span>
             <div class="chart" id="dailyChart">
-              <canvas id="monthDailyChart" width="1000" height="250"></canvas>
+              <canvas id="monthDailyChart" width="1000" height="200"></canvas>
             </div>
           </div>
           <div class="home-mtd-container">
@@ -222,93 +225,89 @@
           <div class="app-bar-tail" id=""><i class='bx  bx-filter'  ></i> </div>
         </div>
         <div class="rec-payments" id="recPayments">
-          <!-- <div class="rec-record paid" id="">
-            <div class="date">
-              <div class="txn_date">27</div>
-              <div class="txn_month">May</div>
+          <!-- <div class="due-record rec-paid">
+            <div class="head">
+              <div class="due-date">05 July 25</div>
+              <div class="status">
+                <div class="txt">Paid</div>
+                <div class="status-logo"><i class='bx  bx-check-circle'  ></i></div>
+              </div>
             </div>
-            <div class="content">
-              <h4>Cook</h4>
-              <span>Amount: 2800</span>
+            <div class="body">
+              <div class="left">
+                <span class="title">Cook</span>
+                <span class="amount">&#8377 2800</span>
+              </div>
+              <div class="right">
+                <div class="txt">
+                  <span class="a">Paid On</span>
+                  <span class="b">07 July 25</span>
+                </div>
+                <div class="status-logo"><i class="material-icons">done</i></div>
+              </div>
             </div>
-            <div class="status">
-              <span>Paid</span>
+          </div>
+          <div class="due-record rec-upcoming">
+            <div class="head">
+              <div class="due-date">05 July 25</div>
+              <div class="status">
+                <div class="txt">Upcoming</div>
+                <div class="status-logo"><i class='bx  bx-stopwatch'  ></i></div>
+              </div>
+            </div>
+            <div class="body">
+              <div class="left">
+                <span class="title">Cook</span>
+                <span class="amount">&#8377 2800</span>
+              </div>
+              <div class="right">
+                <div class="">
+                  <span class="">Skip?</span>
+                </div>
+                <div class="">
+                  <span>Mark as paid?</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="due-record rec-overdue">
+            <div class="head">
+              <div class="due-date">05 July 25</div>
+              <div class="status">
+                <div class="txt">Overdue</div>
+                <div class="status-logo"><i class='bx  bx-alert-octagon'  ></i></div>
+              </div>
+            </div>
+            <div class="body">
+              <div class="left">
+                <span class="title">Cook</span>
+                <span class="amount">&#8377 2800</span>
+              </div>
+              <div class="right">
+                <span class="a">Paid On</span>
+                <span class="b">07 July 25</span>
+              </div>
+            </div>
+          </div>
+          <div class="due-record rec-skipped">
+            <div class="head">
+              <div class="due-date">05 July 25</div>
+              <div class="status">
+                <div class="txt">Skipped</div>
+                <div class="status-logo"><i class='bx  bx-fast-forward-circle'  ></i> </div>
+              </div>
+            </div>
+            <div class="body">
+              <div class="left">
+                <span class="title">Cook</span>
+                <span class="amount">&#8377 2800</span>
+              </div>
+              <div class="right">
+                <span class="a">Paid On</span>
+                <span class="b">07 July 25</span>
+              </div>
             </div>
           </div> -->
-          <div class="due-record">
-            <div class="head">
-              <div class="typ-logo"><i class="material-icons">autorenew</i></div>
-              <div class="due-date">05 July 25</div>
-              <!-- <div class="status bb">
-                <div class="txt">Paid</div>
-                <div class="status-logo"><i class="material-icons">check_small</i></div>
-              </div> -->
-            </div>
-            <div class="body">
-              <div class="left">
-                <span class="title">Cook</span>
-                <span class="amount">&#8377 2800</span>
-              </div>
-              <div class="right">
-                <div class="txt">
-                  <span class="a">Paid On</span>
-                  <span class="b">07 July 25</span>
-                </div>
-                <div class="status-logo"><i class="material-icons">done</i></div>
-              </div>
-            </div>
-          </div>
-          <div class="due-record">
-            <div class="head">
-              <div class="typ-logo"><i class="material-icons">autorenew</i></div>
-              <div class="due-date">05 July 25</div>
-            </div>
-            <div class="body">
-              <div class="left">
-                <span class="title">Cook</span>
-                <span class="amount">&#8377 2800</span>
-              </div>
-              <div class="right">
-                <div class="txt">
-                  <span class="a">Paid On</span>
-                  <span class="b">07 July 25</span>
-                </div>
-                <div class="status-logo"><i class="material-icons">done</i></div>
-              </div>
-            </div>
-          </div>
-          <div class="due-record">
-            <div class="head">
-              <div class="typ-logo"><i class="material-icons">autorenew</i></div>
-              <div class="due-date">05 July 25</div>
-            </div>
-            <div class="body">
-              <div class="left">
-                <span class="title">Cook</span>
-                <span class="amount">&#8377 2800</span>
-              </div>
-              <div class="right">
-                <span class="a">Paid On</span>
-                <span class="b">07 July 25</span>
-              </div>
-            </div>
-          </div>
-          <div class="due-record">
-            <div class="head">
-              <div class="typ-logo"><i class="material-icons">autorenew</i></div>
-              <div class="due-date">05 July 25</div>
-            </div>
-            <div class="body">
-              <div class="left">
-                <span class="title">Cook</span>
-                <span class="amount">&#8377 2800</span>
-              </div>
-              <div class="right">
-                <span class="a">Paid On</span>
-                <span class="b">07 July 25</span>
-              </div>
-            </div>
-          </div>
         </div>
         <div class="floating-button" id="">
           <button id="" onclick="">+</button>

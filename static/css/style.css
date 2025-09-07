@@ -7,7 +7,9 @@
     --a1: #000000;
     --a2: #e5b80b;
     --sred: #e5737395;
-    --sgreen: #81c784bb;
+    --green1: #81c784bb;
+    --green2: #d4edda;
+    --green3: #155724;
     --bgmain: #f8f9fa;
 }
 
@@ -616,23 +618,6 @@ body {
     flex-direction: column;
     gap: 5px;
 }
-.paid {
-    background-color: #d4edda;
-    color: #155724;
-}
-.overdue {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-.unpaid {
-    background-color: #fff3cd;
-    color: #856404;
-}
-
-.skipped {
-    background-color: #cce5ff;
-    color: #004085;
-}
 
 /* .menu-section{
 
@@ -809,28 +794,29 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--g2);
+    border: 1px solid var(--g3);
     height: 100px;
-    border-radius: 20px;
+    border-radius: 15px;
     background: white;
     margin-bottom: 10px;
 }
 
 .due-record .head {
-    background: var(--g1) !important; 
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    background: var(--g1); 
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
     display: flex;
     height: 30px;
-    padding: 5px 20px;
+    /* padding: 5px 20px; */
     gap: 15px;
     align-items: center;
+    justify-content: space-between;
     font-size: 12px;
     font-weight: 600;
 }
 
 .due-record .head .typ-logo {
-    background: rgb(241, 97, 97);
+    /* background: rgb(241, 97, 97); */
     width: 20px;
     height: 20px;
     display: flex;
@@ -840,8 +826,29 @@ body {
     color: white;
 }
 
+.rec-paid .head {
+    background: var(--green2);
+    color: var(--green3);
+}
+
+.rec-upcoming .head {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.rec-overdue .head  {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.rec-skipped .head  {
+    background: #cce5ff;
+    color: #004085;
+}
+
 .due-record .head .due-date {
     display: flex;
+    padding: 0px 20px;
     /* flex: 1; */
 }
 
@@ -849,7 +856,23 @@ body {
     display: flex;
     width: 100px;
     align-items: center;
+    justify-content: center;
+    height: 100%;
+    border-top-right-radius: 15px;
+    gap: 5px;
 }
+
+.due-record .head .status .status-logo{
+    display: flex;
+    /* width: 100px; */
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+}
+
 
 .due-record .head i{
     font-size: 16px;
@@ -861,7 +884,7 @@ body {
 }
 
 .due-record .body .left {
-    width: 50%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -871,23 +894,23 @@ body {
 
 .due-record .body .left .amount {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 300;
 }
 
 .due-record .body .left .title {
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 .due-record .body .right {
-    width: 50%;
+    width: 40%;
     display: flex;
     justify-content: end;
     align-items: center;
     padding: 0px 20px;
     font-size: 14px;
     gap: 15px;
-    color: #155724;
+    /* color: #155724; */
 }
 
 .due-record .body .right .txt {
