@@ -53,7 +53,8 @@ def get_acc_overview():
 
 @app.route('/api/get_month_overview', methods=['GET'])
 def get_month_overview():
-    txns = sb.fetchThisDayMonthOverview()
+    month = int(request.args.get('month'))
+    txns = sb.fetchThisDayMonthOverview(month)
     return jsonify(txns)
     
 @app.route('/api/insert_transaction', methods=['POST'])

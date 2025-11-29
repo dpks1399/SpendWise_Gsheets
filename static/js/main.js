@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     beautify();
     fetchCategories();  // remove paid recurring categories
     fetchSources();
-    fetchOverview();
+    fetchOverview(0);
     fetchTransactions();
     fetchRecurring();
     showScreen('home-screen');  // Show the Add Transaction screen by default
@@ -14,12 +14,17 @@ function alert_pop(msg){
     alert(msg);
 }
 
-function beautify(){
+function beautify(monthStr = "default") {
     const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    const monthToUse = monthStr && monthStr.trim() !== "default" ? monthStr : currentMonth;
+
     const parentDiv = document.getElementById("home-screen-content");
-    const spans = parentDiv.querySelectorAll("span");
+    const spans = document.querySelectorAll(".home-mtd-stats-container > span:first-of-type, .home-mtd-daily-container span:first-of-type, .home-mtd-container span:first-of-type");
+
     spans.forEach(span => {
-    span.textContent = span.textContent.replace(/MTD/g, currentMonth);
+        let words = span.textContent.trim().split(" ");
+        words[0] = monthToUse;
+        span.textContent = words.join(" ");
     });
 }
 
@@ -34,8 +39,8 @@ function updateCurrentDateTimeInAddTransaction(){
     document.getElementById("transactionTimeSpan-sc01").textContent = `${hours}:${minutes}`;
 }
 
-function fetchOverview(){
-    fetch('/api/get_month_overview')
+function fetchOverview(selectedMonth){
+    fetch(`/api/get_month_overview?month=${selectedMonth}`)
     .then(response => response.json())
     .then(stats => {
         populateMonthOverview(stats);
@@ -113,7 +118,12 @@ function populateMonthOverview(data){
         amnt.push(data["CAT_SPEND"][i]["TOTAL_SPENT"])
     }
     const total = amnt.reduce((sum, num) => sum + num, 0);
-    percentage = total === 0 ? arr.map(() => 0) : amnt.map(num => (num / total * 100).toFixed(1));
+    percentage = total === 0 ? amnt.map(() => 0) : amnt.map(num => (num / total * 100).toFixed(1));
+
+    const existingM = Chart.getChart('monthCatChart'); // requires id on canvas element
+    if (existingM) existingM.destroy();
+    const existingD = Chart.getChart('monthDailyChart'); // requires id on canvas element
+    if (existingD) existingD.destroy();
 
     const ctxb = document.getElementById("monthCatChart").getContext("2d");
     const ctxl = document.getElementById("monthDailyChart").getContext("2d");
@@ -864,3 +874,10 @@ document.getElementById('transaction-time-sc01').addEventListener('change', () =
 document.getElementById('transaction-date-sc01').addEventListener('change', () => {
     document.getElementById("transactionDateSpan-sc01").textContent = document.getElementById('transaction-date-sc01').value;
 });
+document.getElementById("tmp_month").addEventListener("change", function () {
+    const selectedValue = this.value;
+
+    console.log("Selected month:", selectedValue);
+    fetchOverview(this.value);
+    beautify(this.options[this.selectedIndex].text);
+  });

@@ -299,7 +299,9 @@ class Supabase():
 
         return(combined_list)
 
-    def fetchThisDayMonthOverview(self):
+    def fetchThisDayMonthOverview(self,month):
+        if month == 0:
+            month = datetime.datetime.now().month
         day_query = f'''
                         SELECT  
                             COALESCE(SUM(CASE WHEN t.type = 'expenditure' THEN t.amount END), 0) AS day_spent,  
@@ -314,7 +316,7 @@ class Supabase():
                             (COALESCE(SUM(CASE WHEN t.type = 'expenditure' THEN t.amount END), 0) /  
                             NULLIF(COUNT(DISTINCT DATE(t.datetime)), 0)) AS month_avg_daily_spend  
                         FROM {self.SCHEMA}.transactions_master t left join {self.SCHEMA}.categories c on t.category = c.id
-                        WHERE c.type = 0 AND DATE_TRUNC('month', t.datetime) = DATE_TRUNC('month', CURRENT_DATE);
+                        WHERE c.type = 0 AND EXTRACT(MONTH FROM t.datetime) = {month};
                     '''
         cat_query = f'''
                         SELECT  
@@ -325,7 +327,7 @@ class Supabase():
                         JOIN {self.SCHEMA}.categories c ON t.category = c.id  
                         WHERE c.type = 0  
                         AND t.type = 'expenditure'  
-                        AND DATE_TRUNC('month', t.datetime) = DATE_TRUNC('month', CURRENT_DATE)  
+                        AND EXTRACT(MONTH FROM t.datetime) = {month}
                         GROUP BY c.id, c.category  
                         ORDER BY total_spent DESC;
                     '''
@@ -334,7 +336,7 @@ class Supabase():
                             COALESCE(SUM(CASE WHEN t.type = 'expenditure' THEN t.amount END), 0) AS amount,
                             EXTRACT(DAY FROM t.datetime) AS day
                         FROM {self.SCHEMA}.transactions_master t left join {self.SCHEMA}.categories c on t.category = c.id
-                        WHERE c.type = 0 AND DATE_TRUNC('month', t.datetime) = DATE_TRUNC('month', CURRENT_DATE)
+                        WHERE c.type = 0 AND EXTRACT(MONTH FROM t.datetime) = {month}
                         GROUP BY EXTRACT(DAY FROM t.datetime);
                     '''
         conn = self.get_db_connection()
